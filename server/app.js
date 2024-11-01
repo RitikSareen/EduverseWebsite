@@ -13,7 +13,8 @@ const categoryRoutes = require('./routes/category.route');
 const assignmentChannelRoutes = require('./routes/assignmentChannel.route');
 const voiceChannelRoutes = require('./routes/voiceChannel.route');
 const textChannelRoutes = require('./routes/textChannel.route');
-const fileRoutes = require('./routes/file.route');
+const directMessagesRoutes = require('./routes/directMessage.route');
+// const fileRoutes = require('./routes/file.route');
 const notificationRoutes = require('./routes/notification.route');
 const verifyToken = require('./middleware/auth.guard');
 
@@ -32,6 +33,7 @@ const port = 3500;
 const mongoURI = 'mongodb://localhost:4800/eduverse-db';
 
 // Connect to MongoDB
+// mongoose.connect(mongoURI);
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -56,7 +58,8 @@ app.use('/categories', verifyToken, categoryRoutes);
 app.use('/assignmentsChannel', verifyToken, assignmentChannelRoutes);
 app.use('/textChannel', verifyToken, textChannelRoutes);
 app.use('/voiceChannel', verifyToken, voiceChannelRoutes);
-app.use('/files', verifyToken, fileRoutes);
+app.use('/directMessages', verifyToken, directMessagesRoutes);
+// app.use('/files', verifyToken, fileRoutes);
 app.use('/notifications', verifyToken, notificationRoutes);
 
 // Create HTTP server and set up Socket.IO
@@ -92,7 +95,7 @@ setupDirectMessageSocket(io);
 setupFileSocket(io);
 setupNotificationSocket(io);
 setupGroupChatSocket(io);
-setupChannelSocket(io);
+
 
 // Define a simple route
 app.get('/', (req, res) => {

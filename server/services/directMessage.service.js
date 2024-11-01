@@ -1,4 +1,4 @@
-const DirectConversation = require('../models/directConversation');
+const DirectConversation = require('../models/directMessage');
 
 // Start a new direct conversation
 const startDirectConversation = async (req, res) => {
