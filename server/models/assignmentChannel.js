@@ -24,6 +24,12 @@ const assignmentSchema = new mongoose.Schema({
   dueDate: {
     type: Date,
   },
+  allowedRoles: {
+    role: { type: String, required: true }, // Custom roles like admin, teacher, student, etc.
+    visible: [{ type: Boolean }], // Custom roles allowed to see the channel
+    read: [{ type: Boolean }],    // Custom roles allowed to read the channel
+    write: [{ type: Boolean }],   // Custom roles allowed to write in the channel
+  },
   files: [
     {
       fileName: {

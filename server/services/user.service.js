@@ -25,24 +25,33 @@ const registerUser = async (req, res) => {
 // User login
 const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body
+ 
     const user = await User.findOne({ email });
-
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      throw new Error('Invalid email or password');
     }
-
+     // Check if the password is correct
     const isPasswordValid = await bcrypt.compare(password, user.password);
+    
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      throw new Error('Invalid email or password');
     }
-
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.json({ token, user });
-  } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
-  }
-};
+     // Generate a JWT token
+    const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+     
+    res.status(201).json({
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email
+      },
+      token: token
+    });
+  } catch(error) {
+    res.status(500).json({error: error.message })
+  }   
+}
 
 // Get user profile
 const getUserProfile = async (req, res) => {

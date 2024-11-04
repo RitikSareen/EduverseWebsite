@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-
 const verifyToken = (req, res, next) => {
    const token = req.header('Authorization')?.split(' ')[1];
 
@@ -8,7 +7,6 @@ const verifyToken = (req, res, next) => {
    if (!token) {
        return res.status(401).json({ error: 'Access denied, no token provided' });
    }
-
 
    try {
        const secretKey = 'mysecretkey'

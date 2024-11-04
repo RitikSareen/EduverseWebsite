@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
       ref: 'Server',
     },
   ],
+  password: {
+    type: String,
+    required: true
+  }
 });
 
 const User = mongoose.model('User', userSchema);

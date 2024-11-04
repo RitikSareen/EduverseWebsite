@@ -36,9 +36,10 @@ const textChannelSchema = new mongoose.Schema({
   channelName: { type: String, required: true, trim: true },
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
   allowedRoles: {
-    visible: [{ type: String }], // Custom roles allowed to see the channel
-    read: [{ type: String }],    // Custom roles allowed to read the channel
-    write: [{ type: String }],   // Custom roles allowed to write in the channel
+    role: { type: String, required: true }, // Custom roles like admin, teacher, student, etc.
+    visible: [{ type: Boolean }], // Custom roles allowed to see the channel
+    read: [{ type: Boolean }],    // Custom roles allowed to read the channel
+    write: [{ type: Boolean }],   // Custom roles allowed to write in the channel
   },
   messages: [messageSchema], // Array of embedded messages
 }, {
