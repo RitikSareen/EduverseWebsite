@@ -1,0 +1,14 @@
+<div class="auth-form">
+  <h3>Sign In to Eduverse</h3>
+  <form #loginForm="ngForm" (ngSubmit)="onLogin()">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" [(ngModel)]="credentials.email" name="email" required />
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" [(ngModel)]="credentials.password" name="password" required />
+    </div>
+    <button type="submit" class="button-primary">Sign In</button>
+  </form>
+</div>

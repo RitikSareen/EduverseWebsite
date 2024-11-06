@@ -1,0 +1,12 @@
+<div class="server-grid">
+    <!-- Create Server Block -->
+    <div class="server-block create-server" (click)="navigateToCreateServer()">
+      <span>+</span>
+    </div>
+  
+    <!-- Display Server Blocks -->
+    <div *ngFor="let server of servers" class="server-block">
+      <p>{{ server.name }}</p>
+    </div>
+  </div>
+  

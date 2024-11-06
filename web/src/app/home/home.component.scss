@@ -1,0 +1,28 @@
+.home-container {
+    display: flex;
+    height: 100vh; /* Full viewport height */
+  }
+  
+  .content-area {
+    margin-left: 230px; /* Adjusted to match sidebar width */
+    padding: 20px;
+    width: calc(100% - 300px); /* Full width minus sidebar width */
+    overflow-y: auto; /* Scrollable if content overflows */
+    background-color: #ffffff; /* Light background for contrast */
+    color: #333; /* Dark text color */
+  }
+//   .sidebar-section {
+//     width: 200px; /* Increased width */
+//     background-color: #1b1b1b; /* Dark background color */
+//     color: #e0e0e0; /* Light text color */
+//     height: 100vh; /* Full viewport height */
+//     padding: 20px;
+//     display: flex;
+//     flex-direction: column;
+//     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+//     position: fixed; /* Fix sidebar on the left */
+//     top: 0;
+//     left: 0;
+//     overflow-y: auto; /* Allow scrolling if content exceeds viewport */
+//   }
+  

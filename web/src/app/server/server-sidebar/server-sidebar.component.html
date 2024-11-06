@@ -1,0 +1,25 @@
+<div class="server-sidebar">
+    <div class="sidebar-header">
+      <h2>{{ serverName }}</h2> <!-- The server's name -->
+    </div>
+    <nav class="sidebar-nav">
+      <div class="category" *ngFor="let category of categories">
+        <h3>{{ category.name }}</h3>
+        <ul>
+          <li *ngFor="let textChannel of category.textChannels">
+            <a routerLink="/servers/{{serverId}}/text/{{textChannel.id}}">{{ textChannel.name }}</a>
+          </li>
+          <li *ngFor="let assignmentChannel of category.assignmentChannels">
+            <a routerLink="/servers/{{serverId}}/assignment/{{assignmentChannel.id}}">{{ assignmentChannel.name }}</a>
+          </li>
+          <li *ngFor="let voiceChannel of category.voiceChannels">
+            <a routerLink="/servers/{{serverId}}/voice/{{voiceChannel.id}}">{{ voiceChannel.name }}</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="back-to-home">
+      <button (click)="goBackHome()">Back to Home</button>
+    </div>
+  </div>
+  

@@ -1,0 +1,18 @@
+<div class="sidebar-section">
+  <nav class="sidebar-nav">
+    <ul>
+      <li>
+        <a [routerLink]="['/home/dashboard']" routerLinkActive="active-link">Home</a>
+      </li>
+      <li>
+        <a [routerLink]="['/home/servers']" routerLinkActive="active-link">Servers</a>
+      </li>
+      <li>
+        <a [routerLink]="['/home/message']" routerLinkActive="active-link">Messages</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Logout button placed outside the navigation list to be positioned at the bottom -->
+  <button class="logout-button" (click)="logout()">Log Out</button>
+</div>
