@@ -2,5 +2,5 @@ stages:
   - build
 
 include:
-  - local: "api/.gitlab-ci.yml"
-  - local: "app/.gitlab-ci.yml"
+  - local: "server/.gitlab-ci.yml"
+  - local: "web/.gitlab-ci.yml"
