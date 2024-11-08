@@ -1,0 +1,22 @@
+stages:
+  - build
+
+variables:
+  APP_IMAGE: harryphoebus/eduverse-app
+app_build:
+  stage: build
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo "Building app"
+    - cd app
+    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
+  script:
+    - docker build -t $APP_IMAGE:latest .
+    - docker push $APP_IMAGE:latest
+  only:
+    - main #run when changes on main branch only
+  tags:
+    - gitlab-org-docker
+

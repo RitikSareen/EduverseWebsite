@@ -1,0 +1,26 @@
+services:
+  eduverse-db:
+    image: mongo:latest
+    container_name: eduverse-db
+    ports:
+      - "4800:27017"
+
+  eduverse-api:
+    image: harryphoebus/eduverse-api:latest
+    container_name: eduverse-api
+    ports:
+      - "3500:3000"
+    environment:
+      - API_PORT=3000
+      - APP_URI=http://localhost:4200
+      - MONGODB_URI=mongodb://eduverse-db:27017/eduverse-db
+    depends_on:
+      - eduverse-db
+
+  eduverse-app:
+    image: harryphoebus/eduverse-app:latest
+    container_name: eduverse-app
+    ports:
+      - "4200:80"
+    depends_on:
+      - eduverse-api

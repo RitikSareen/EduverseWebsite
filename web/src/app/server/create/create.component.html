@@ -1,1 +1,20 @@
-<p>create works!</p>
+<div class="create-server-container">
+    <h2>Create New Server</h2>
+    <form (ngSubmit)="onSubmit()" #createServerForm="ngForm">
+      <!-- Server Name -->
+      <div class="form-group">
+        <label for="name">Server Name</label>
+        <input type="text" id="name" [(ngModel)]="serverData.name" name="name" required />
+      </div>
+  
+      <!-- Server Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" [(ngModel)]="serverData.description" name="description"></textarea>
+      </div>
+  
+      <!-- Submit Button -->
+      <button type="submit" class="button-primary">Create Server</button>
+    </form>
+  </div>
+  

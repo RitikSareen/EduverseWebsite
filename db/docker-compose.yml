@@ -1,0 +1,6 @@
+services:
+ eduverse-db:
+   container_name: eduverse-db
+   image: mongo:latest
+   ports:
+     - "4800:27017"

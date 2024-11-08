@@ -17,12 +17,13 @@ export class ServerComponent implements OnInit {
   }
 
   getServers(): void {
-    this.serverService.getAllServers().subscribe((data: any[]) => {
-      this.servers = data;
+    this.serverService.getAllServers((data: any[]) => {
+      this.servers = data; // Directly set the servers data
     });
   }
 
   navigateToCreateServer(): void {
     this.router.navigate(['/server/create']); // Adjust route as needed
   }
+
 }

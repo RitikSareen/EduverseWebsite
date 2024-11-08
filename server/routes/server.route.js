@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { createServer, getServerDetails, addUserToServer, updateServer, removeUserFromServer } = require('../services/server.service');
+const verifyToken = require('../middleware/auth.guard');
 
 // Create a new server
 router.post('/', createServer);

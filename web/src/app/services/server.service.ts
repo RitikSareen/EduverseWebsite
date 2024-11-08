@@ -56,17 +56,36 @@ export class ServerService {
       });
   }
 
-  // Show all servers (updated to return Observable)
-  getAllServers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/all`);
+  
+  getAllServers(callback: (data: any[]) => void): void {
+    this.http.get<any[]>(`${this.baseUrl}/all`)
+      .subscribe({
+        next: (data: any[]) => {
+          callback(data); // Pass the data to the provided callback function
+        },
+        error: (error) => {
+          console.error('Failed to fetch servers:', error);
+        }
+      });
   }
 
-  // Show a server by ID
-  getServerById(serverId: string): void {
+  // Fetch server details by ID (including categories and channels)
+  getServerById(serverId: string, callback: (data: any) => void): void {
     this.http.get(`${this.baseUrl}/${serverId}`)
       .subscribe({
-        next: (server) => {
-          console.log('Fetched server details:', server);
+        next: (data: any) => {
+          callback(data); // Pass the data to the provided callback function
+        },
+        error: (error) => {
+          console.error('Failed to fetch server details:', error);
+        }
+      });
+  }
+  getServerDetails(serverId: string, callback: (server: any) => void): void {
+    this.http.get(`${this.baseUrl}/${serverId}`)
+      .subscribe({
+        next: (server: any) => {
+          callback(server); // Pass server data to the callback
         },
         error: (error) => {
           console.error('Failed to fetch server details:', error);

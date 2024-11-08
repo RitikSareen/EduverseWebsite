@@ -1,16 +1,28 @@
 // Server Service
 const Server = require('../models/server');
+const User = require('../models/user')
 
 // Create a new server
 const createServer = async (req, res) => {
   try {
+    const userId = req.user.id; // Get the user ID from `req.user`, set by `verifyToken`
+
+    // Step 1: Create the server with the authenticated user as creator
     const newServer = new Server({
-      serverName: req.body.serverName,
-      roles: req.body.roles,
-      members: [],
-      categories: [],
+      name: req.body.name,
+      description: req.body.description,
+      createdBy: userId,
+      members: [{ userId: userId, role: 'Admin' }] // Set creator as an Admin member
     });
     const savedServer = await newServer.save();
+
+    // Step 2: Update the user's servers array to include the new server
+    await User.findByIdAndUpdate(
+      userId,
+      { $push: { servers: savedServer._id } },
+      { new: true }
+    );
+
     res.status(201).json(savedServer);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });

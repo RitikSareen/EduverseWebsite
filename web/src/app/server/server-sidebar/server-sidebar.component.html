@@ -1,25 +1,19 @@
 <div class="server-sidebar">
-    <div class="sidebar-header">
-      <h2>{{ serverName }}</h2> <!-- The server's name -->
-    </div>
-    <nav class="sidebar-nav">
-      <div class="category" *ngFor="let category of categories">
-        <h3>{{ category.name }}</h3>
-        <ul>
-          <li *ngFor="let textChannel of category.textChannels">
-            <a routerLink="/servers/{{serverId}}/text/{{textChannel.id}}">{{ textChannel.name }}</a>
-          </li>
-          <li *ngFor="let assignmentChannel of category.assignmentChannels">
-            <a routerLink="/servers/{{serverId}}/assignment/{{assignmentChannel.id}}">{{ assignmentChannel.name }}</a>
-          </li>
-          <li *ngFor="let voiceChannel of category.voiceChannels">
-            <a routerLink="/servers/{{serverId}}/voice/{{voiceChannel.id}}">{{ voiceChannel.name }}</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <div class="back-to-home">
-      <button (click)="goBackHome()">Back to Home</button>
+  <!-- Server Name at the Top -->
+  <div class="server-name">
+    {{ serverName }}
+  </div>
+
+  <!-- List of Categories and Channels -->
+  <div *ngFor="let category of categories" class="category">
+    <div class="category-name">{{ category.name }}</div>
+
+    <!-- List of Channels under each Category -->
+    <div *ngFor="let channel of category.channels" class="channel-item">
+      <span *ngIf="channel.type === 'text'">#</span> <!-- Prefix for text channels -->
+      <span *ngIf="channel.type === 'voice'">🔊</span> <!-- Icon for voice channels -->
+      <span *ngIf="channel.type === 'assignment'">📄</span> <!-- Icon for assignment channels -->
+      {{ channel.name }}
     </div>
   </div>
-  
+</div>

@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
+import { ServerService } from '../../services/server.service';
 import { ActivatedRoute } from '@angular/router';
-import { ServerService } from '../services/server.service';
-
 
 @Component({
   selector: 'app-server-sidebar',
@@ -10,30 +8,22 @@ import { ServerService } from '../services/server.service';
   styleUrls: ['./server-sidebar.component.scss']
 })
 export class ServerSidebarComponent implements OnInit {
-  serverId: string;
-  serverName: string;
-  categories = [];
+  serverName: string = '';
+  categories: any[] = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private serverService: ServerService
-  ) {}
+  constructor(private serverService: ServerService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.serverId = this.route.snapshot.paramMap.get('serverId');
-    this.loadServerData();
+    const serverId = this.route.snapshot.paramMap.get('serverId');
+    if (serverId) {
+      this.getServerDetails(serverId);
+    }
   }
 
-  loadServerData(): void {
-    // Load the server's categories and channels
-    this.serverService.getServerDetails(this.serverId).subscribe((server) => {
-      this.serverName = server.name;
-      this.categories = server.categories;
+  getServerDetails(serverId: string): void {
+    this.serverService.getServerDetails(serverId, (server: any) => {
+      this.serverName = server.serverName;
+      this.categories = server.categories; // Assuming categories includes channels
     });
-  }
-
-  goBackHome(): void {
-    this.router.navigate(['/home']);
   }
 }
