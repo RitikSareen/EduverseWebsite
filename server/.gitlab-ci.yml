@@ -10,7 +10,7 @@ api_build:
     - docker:dind
   before_script:
     - echo "Building api"
-    - cd api
+    - cd server
     - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
   script:
     - docker build -t $API_IMAGE:latest .

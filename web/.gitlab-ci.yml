@@ -10,7 +10,7 @@ app_build:
     - docker:dind
   before_script:
     - echo "Building app"
-    - cd app
+    - cd web
     - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
   script:
     - docker build -t $APP_IMAGE:latest .
