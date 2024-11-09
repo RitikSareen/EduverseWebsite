@@ -62,6 +62,18 @@ const updateServer = async (req, res) => {
   }
 };
 
+const getAllServers = async (req, res) => {
+  try {
+    console.log('getAllServers called'); // Log the function call
+    const servers = await Server.find(); // Adjust query as needed
+    console.log('Servers fetched successfully:', servers);
+    res.status(200).json(servers);
+  } catch (error) {
+    console.error('Error fetching servers:', error); // Log the error in detail
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 // Remove user from server
 const removeUserFromServer = async (req, res) => {
   try {
@@ -76,6 +88,7 @@ const removeUserFromServer = async (req, res) => {
 
 module.exports = {
   createServer,
+  getAllServers,
   getServerDetails,
   addUserToServer,
   updateServer,

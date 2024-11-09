@@ -21,7 +21,7 @@ export class ServerSidebarComponent implements OnInit {
   }
 
   getServerDetails(serverId: string): void {
-    this.serverService.getServerDetails(serverId, (server: any) => {
+    this.serverService.getServerById(serverId, (server: any) => {
       this.serverName = server.serverName;
       this.categories = server.categories; // Assuming categories includes channels
     });

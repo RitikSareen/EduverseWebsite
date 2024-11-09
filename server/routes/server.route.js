@@ -1,12 +1,12 @@
 // Server Routes
 const express = require('express');
 const router = express.Router();
-const { createServer, getServerDetails, addUserToServer, updateServer, removeUserFromServer } = require('../services/server.service');
-const verifyToken = require('../middleware/auth.guard');
+const { createServer, getServerDetails, addUserToServer, updateServer, removeUserFromServer, getAllServers } = require('../services/server.service');
 
 // Create a new server
-router.post('/', createServer);
+router.post('/create', createServer);
 
+router.get('/all', getAllServers);
 // Get server details
 router.get('/:serverId', getServerDetails);
 

@@ -23,7 +23,8 @@ export class AuthService {
 
   // Method to get the token from local storage
   getToken(): string | null {
-    return localStorage.getItem('token');
+    const token= localStorage.getItem('token');
+    return token ? JSON.parse(token) :null;
   }
 
   // Method to register a new user
