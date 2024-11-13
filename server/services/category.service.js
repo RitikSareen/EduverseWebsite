@@ -32,6 +32,18 @@ const getCategories = async (req, res) => {
   }
 };
 
+const getCategoryByID = async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.categoryId);
+    if (!category) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
+    res.json(category);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 // Update category
 const updateCategory = async (req, res) => {
   try {
@@ -57,4 +69,5 @@ module.exports = {
   getCategories,
   updateCategory,
   deleteCategory,
+  getCategoryByID
 };

@@ -1,0 +1,20 @@
+.show-container {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+}
+
+//   .sidebar-section {
+//   width: 250px; /* Fixed width for sidebar */
+//   background-color: #1e1e1e; /* Dark sidebar background */
+//   color: white;
+//   overflow-y: auto;
+// }
+
+  .main-content {
+    margin-left: 230px; /* Adjusted to match sidebar width */
+    padding: 20px;
+    width: calc(100% - 300px); /* Full width minus sidebar width */
+    overflow-y: auto; /* Scrollable if content overflows */
+    background-color: #ffffff; /* Light background for contrast */
+    color: #333; /* Dark text color */
+  }

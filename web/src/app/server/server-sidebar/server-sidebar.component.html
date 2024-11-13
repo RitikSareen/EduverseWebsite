@@ -1,19 +1,33 @@
 <div class="server-sidebar">
-  <!-- Server Name at the Top -->
-  <div class="server-name">
-    {{ serverName }}
+  <!-- Server Name and Settings Icon at the Top -->
+  <div class="server-header">
+    <div class="server-name">{{ serverName }}</div>
+    <div class="settings-container">
+      <span class="settings-icon" (click)="toggleDropdown()">⚙️</span>
+
+      <!-- Dropdown Menu for Server Settings -->
+      <div class="dropdown-menu" *ngIf="showDropdown">
+        <div class="dropdown-item" [routerLink]="['/server/:serverId/categories/create']" routerLinkActive="active-link">Create New Category</div>
+        <div class="dropdown-item" (click)="openServerSettings()">Server Settings</div>
+        <div class="dropdown-item leave" (click)="leaveServer()">Leave Server</div>
+      </div>
+    </div>
   </div>
 
   <!-- List of Categories and Channels -->
   <div *ngFor="let category of categories" class="category">
-    <div class="category-name">{{ category.name }}</div>
+    <div class="category-header">
+      <span class="category-name">{{ category.name }}</span>
+      <span class="add-icon" (click)="addChannel(category)">+</span>
+      <span class="category-settings-icon" (click)="openCategorySettings(category)">⚙️</span>
+    </div>
 
-    <!-- List of Channels under each Category -->
     <div *ngFor="let channel of category.channels" class="channel-item">
-      <span *ngIf="channel.type === 'text'">#</span> <!-- Prefix for text channels -->
-      <span *ngIf="channel.type === 'voice'">🔊</span> <!-- Icon for voice channels -->
-      <span *ngIf="channel.type === 'assignment'">📄</span> <!-- Icon for assignment channels -->
+      <span *ngIf="channel.type === 'text'">#</span>
+      <span *ngIf="channel.type === 'voice'">🔊</span>
+      <span *ngIf="channel.type === 'assignment'">📄</span>
       {{ channel.name }}
+      <span class="channel-settings-icon" (click)="openChannelSettings(channel)">⚙️</span>
     </div>
   </div>
 </div>

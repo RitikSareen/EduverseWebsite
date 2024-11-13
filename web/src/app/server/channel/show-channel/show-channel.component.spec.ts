@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateComponent } from './create.component';
+import { ShowChannelComponent } from './show-channel.component';
 
-describe('CreateComponent', () => {
-  let component: CreateComponent;
-  let fixture: ComponentFixture<CreateComponent>;
+describe('ShowChannelComponent', () => {
+  let component: ShowChannelComponent;
+  let fixture: ComponentFixture<ShowChannelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CreateComponent]
+      declarations: [ShowChannelComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(CreateComponent);
+    fixture = TestBed.createComponent(ShowChannelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

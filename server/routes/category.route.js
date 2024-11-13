@@ -1,20 +1,26 @@
-// Category Routes
 const express = require('express');
 const router = express.Router();
-const { createCategory, getCategories, updateCategory, deleteCategory } = require('../services/category.service');
+const { 
+  createCategory, 
+  getCategories, 
+  getCategoryByID, 
+  updateCategory, 
+  deleteCategory 
+} = require('../services/category.service');
 
+// Route to create a new category within a specific server
+router.post('/:serverId/createCategory', createCategory);
 
-router.post('/', createCategory);
-// Create a new category within a server (requires permission to edit)
-router.post('/servers/:serverId/categories', createCategory);
+// Route to get all categories for a server
+router.get('/:serverId', getCategories);
 
-// Get categories within a server (requires permission to view)
-router.get('/servers/:serverId/categories', getCategories);
+// Route to get a single category by ID
+router.get('/:serverId/:categoryId', getCategoryByID);
 
-// Update a category (requires permission to edit)
-router.put('/categories/:categoryId', updateCategory);
+// Route to update a category by ID
+router.put('/:serverId/:categoryId', updateCategory);
 
-// Delete a category (requires permission to edit)
-router.delete('/categories/:categoryId', deleteCategory);
+// Route to delete a category by ID
+router.delete('/:serverId/:categoryId', deleteCategory);
 
 module.exports = router;

@@ -12,7 +12,7 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       { path: '', component: HomeSidebarComponent, outlet: 'sidebar' }, // Default sidebar route
-      {path: 'dashboard', component: DashboardComponent},
+      { path: 'dashboard', component: DashboardComponent},
       { path: 'servers', component: ServerComponent },
       { path: 'message', component: MessageComponent }
     ]

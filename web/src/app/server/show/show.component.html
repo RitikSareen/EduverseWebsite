@@ -1,1 +1,11 @@
-<p>show works!</p>
+<div class="show-container">
+  <!-- Sidebar Section -->
+  <section class="sidebar-section">
+    <router-outlet name="server-sidebar"></router-outlet>
+  </section>
+
+  <!-- Main Content Area where dynamic content will be displayed -->
+  <section class="main-content">
+    <router-outlet></router-outlet> <!-- Loads dynamic content based on user actions -->
+  </section>
+</div>

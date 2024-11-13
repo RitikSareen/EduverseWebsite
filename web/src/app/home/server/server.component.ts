@@ -25,5 +25,8 @@ export class ServerComponent implements OnInit {
   navigateToCreateServer(): void {
     this.router.navigate(['/server/create']); // Adjust route as needed
   }
+  navigateToServer(serverId: string): void {
+    this.router.navigate(['/server', serverId]); // Route will be /server/:serverId
+  }
 
 }
