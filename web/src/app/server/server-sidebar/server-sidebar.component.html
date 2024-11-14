@@ -7,8 +7,17 @@
 
       <!-- Dropdown Menu for Server Settings -->
       <div class="dropdown-menu" *ngIf="showDropdown">
-        <div class="dropdown-item" [routerLink]="['/server/:serverId/categories/create']" routerLinkActive="active-link">Create New Category</div>
-        <div class="dropdown-item" (click)="openServerSettings()">Server Settings</div>
+        <div class="dropdown-item" 
+          
+          (click)="createCategory()">
+          Create New Category
+        </div>
+
+        <div class="dropdown-item" 
+            
+            (click)="openServerSettings()">
+          Server Settings
+        </div>
         <div class="dropdown-item leave" (click)="leaveServer()">Leave Server</div>
       </div>
     </div>

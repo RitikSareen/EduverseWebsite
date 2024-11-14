@@ -1,17 +1,32 @@
-<div class="create-category">
-    <h2>Create New Category</h2>
-    <form (ngSubmit)="createCategory()">
-      <div class="form-group">
-        <label for="categoryName">Category Name</label>
-        <input
-          type="text"
-          id="categoryName"
-          [(ngModel)]="categoryName"
-          name="categoryName"
-          required
-        />
-      </div>
-      <button type="submit" class="button-primary">Create Category</button>
-    </form>
-  </div>
-  
+<!-- create-category.component.html -->
+<div class="create-category-container">
+  <h2>Create New Category</h2>
+  <form (ngSubmit)="createCategory()">
+    <div class="form-group">
+      <label for="categoryName">Category Name</label>
+      <input type="text" id="categoryName" [(ngModel)]="categoryName" name="categoryName" required />
+    </div>
+
+    <h3>Role Permissions</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Visible</th>
+          <th>Read</th>
+          <th>Write</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let role of allowedRoles; let i = index">
+          <td>{{ role.role }}</td>
+          <td><input type="checkbox" [(ngModel)]="allowedRoles[i].visible" name="visible-{{i}}" /></td>
+          <td><input type="checkbox" [(ngModel)]="allowedRoles[i].read" name="read-{{i}}" /></td>
+          <td><input type="checkbox" [(ngModel)]="allowedRoles[i].write" name="write-{{i}}" /></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button type="submit">Create Category</button>
+  </form>
+</div>

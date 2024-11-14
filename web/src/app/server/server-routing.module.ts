@@ -9,6 +9,7 @@ import { ShowChannelComponent } from './channel/show-channel/show-channel.compon
 import { CreateCategoryComponent } from './category/createCategory/createCategory.component';
 import { ListCategoryComponent } from './category/list-category/list-category.component';
 import { ListChannelComponent } from './channel/list-channel/list-channel.component';
+import { UpdateServerComponent } from './update-server/update-server.component';
 // import { DefaultViewComponent } from './default-view/default-view.component';
 
 const routes: Routes = [
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'categories/create',
         component: CreateCategoryComponent // Route for creating a new category
+      },
+      {
+        path: 'updateServer',
+        component: UpdateServerComponent
       },
       {
         path: 'text-channel/:channelId',

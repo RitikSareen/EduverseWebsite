@@ -101,4 +101,21 @@ export class ServerService {
         }
       });
   }
+  updateServer(serverId: string, updatedData: any): void {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    this.http.put(`${this.baseUrl}/${serverId}`, updatedData, { headers }).subscribe(
+      response => console.log('Server updated successfully'),
+      error => console.error('Failed to update server:', error)
+    );
+  }
+  
+  kickMember(serverId: string, userId: string, callback: () => void): void {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    this.http.delete(`${this.baseUrl}/${serverId}/remove-user/${userId}`, { headers }).subscribe(
+      () => callback(),
+      error => console.error('Failed to kick member:', error)
+    );
+  }
 }

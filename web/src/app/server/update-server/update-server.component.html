@@ -1,0 +1,64 @@
+<div class="server-details">
+    <h2>Update Server: {{ server.name }}</h2>
+  
+    <!-- Server Form -->
+    <div class="server-form">
+      <label>Server Name:</label>
+      <input type="text" [(ngModel)]="server.name" />
+  <br>
+      <label>Server Description:</label>
+      <textarea [(ngModel)]="server.description"></textarea>
+  <br>
+      <label>Join Code:</label>
+      <input type="text" [(ngModel)]="server.joinCode" />
+    </div>
+  
+    <button (click)="updateServer()">Save Changes</button>
+  
+    <!-- Roles Table -->
+    <div class="roles-table">
+      <h3>Server Roles</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Role Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let role of uniqueRoles">
+            <td>{{ role }}</td>
+            <td>
+              <button (click)="removeRole(role)">Remove</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Members Table -->
+    <div class="members-table">
+      <h3>Server Members</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Member Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of server.members">
+            <td>{{ member.role }}</td>
+            <td>{{ member.userId?.username }}</td>
+            <td>{{ member.userId?.email }}</td>
+            <td>
+              <button (click)="kickMember(member.userId._id)">Remove</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

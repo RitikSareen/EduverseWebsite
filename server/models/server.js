@@ -11,7 +11,7 @@ const serverSchema = new mongoose.Schema({
       role: { type: String, required: true }, // Custom roles like admin, teacher, student, etc.
     }
   ],
-  joinCode: { type: String, trim: true, default: this.name }
+  joinCode: { type: String, trim: true, default: 'join' }
 });
 
 module.exports = mongoose.model('Server', serverSchema);

@@ -9,7 +9,7 @@ const {
 } = require('../services/category.service');
 
 // Route to create a new category within a specific server
-router.post('/:serverId/createCategory', createCategory);
+router.post('/create/:serverId', createCategory);
 
 // Route to get all categories for a server
 router.get('/:serverId', getCategories);

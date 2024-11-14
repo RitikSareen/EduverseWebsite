@@ -5,22 +5,22 @@ const Server = require('../models/server');
 // Create a new category
 const createCategory = async (req, res) => {
   try {
-    const newCategory = new Category({
-      categoryName: req.body.categoryName,
-      server: req.params.serverId,
-      channels: [],
-    });
+    const { name, allowedRoles } = req.body;
+    const newCategory = new Category({ name, allowedRoles, channels: [] });
     const savedCategory = await newCategory.save();
 
+    // Link to server
     const server = await Server.findById(req.params.serverId);
     server.categories.push(savedCategory._id);
     await server.save();
 
     res.status(201).json(savedCategory);
   } catch (error) {
+    console.error('Error creating category:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 // Get categories
 const getCategories = async (req, res) => {

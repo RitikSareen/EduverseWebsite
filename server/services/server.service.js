@@ -32,9 +32,19 @@ const createServer = async (req, res) => {
 // Get server details
 const getServerDetails = async (req, res) => {
   try {
-    const server = await Server.findById(req.params.serverId).populate('categories');
+    const server = await Server.findById(req.params.serverId)
+      .populate('categories') // Populate categories if needed
+      .populate({
+        path: 'members.userId', // Path within nested array
+        model: 'User', // Model to populate from
+        select: 'username email' // Select only necessary fields
+      });
+
+    // console.log('Server with populated members:', server); // Log populated data for verification
+    // console.log('Populated server details:', JSON.stringify(server, null, 2));
     res.json(server);
   } catch (error) {
+    console.error('Error fetching server details:', error); // Log any errors
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -42,9 +52,12 @@ const getServerDetails = async (req, res) => {
 // Add user to server
 const addUserToServer = async (req, res) => {
   try {
-    const { userId, roles } = req.body;
+    const { userId } = req.body;
+    const role = req.body.role || 'Student'; // Default role set to "Student" if not provided
+
     const server = await Server.findById(req.params.serverId);
-    server.members.push({ userId, roles });
+    server.members.push({ userId, role });
+    
     const updatedServer = await server.save();
     res.status(201).json(updatedServer);
   } catch (error) {

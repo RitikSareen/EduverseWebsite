@@ -20,6 +20,7 @@ import { CreateChannelComponent } from './channel/create-channel/create-channel.
 import { ListChannelComponent } from './channel/list-channel/list-channel.component';
 import { ShowChannelComponent } from './channel/show-channel/show-channel.component';
 import { UpdateChannelComponent } from './channel/update-channel/update-channel.component';
+import { UpdateServerComponent } from './update-server/update-server.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { UpdateChannelComponent } from './channel/update-channel/update-channel.
     CreateChannelComponent, 
     ListChannelComponent, 
     ShowChannelComponent, 
-    UpdateChannelComponent, // Category component
+    UpdateChannelComponent, UpdateServerComponent, // Category component
   ],
   imports: [
     CommonModule,
