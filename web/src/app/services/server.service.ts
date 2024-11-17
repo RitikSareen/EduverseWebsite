@@ -53,19 +53,17 @@ export class ServerService {
   }
 
   // Join a server by ID
-  joinServer(serverId: string, userId: string): void {
+  joinServer(serverId: string, joinCode: string, successCallback: (response: any) => void, errorCallback: (error: any) => void): void {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    // Corrected the headers to be outside the body
-    this.http.post(`${this.baseUrl}/join`, { serverId, userId }, { headers })
+  
+    this.http.post(`${this.baseUrl}/${serverId}/join`, { joinCode }, { headers })
       .subscribe({
         next: (response: any) => {
-          console.log('User joined server successfully:', response);
+          successCallback(response); // Execute success callback on success
         },
         error: (error) => {
-          console.error('Failed to join server:', error);
-          alert('Failed to join the server. Please try again.');
+          errorCallback(error); // Execute error callback on failure
         }
       });
   }
@@ -109,6 +107,23 @@ export class ServerService {
       error => console.error('Failed to update server:', error)
     );
   }
+  updateMemberRole(serverId: string, memberId: string, role: string, callback: () => void): void {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    this.http.put(`http://localhost:3500/servers/${serverId}/members/${memberId}/role`, { role }, { headers })
+      .subscribe({
+        next: () => {
+          console.log('Member role updated successfully');
+          callback();
+        },
+        error: (error) => {
+          console.error('Failed to update member role:', error);
+          alert('Failed to update member role. Please try again.');
+        }
+      });
+  }
+  
   
   kickMember(serverId: string, userId: string, callback: () => void): void {
     const token = this.authService.getToken();

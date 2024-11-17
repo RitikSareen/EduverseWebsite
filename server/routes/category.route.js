@@ -18,9 +18,9 @@ router.get('/:serverId', getCategories);
 router.get('/:serverId/:categoryId', getCategoryByID);
 
 // Route to update a category by ID
-router.put('/:serverId/:categoryId', updateCategory);
+router.put('/:categoryId', updateCategory);
 
 // Route to delete a category by ID
-router.delete('/:serverId/:categoryId', deleteCategory);
+router.delete('/:categoryId', deleteCategory);
 
 module.exports = router;

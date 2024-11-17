@@ -4,20 +4,9 @@
     <div class="server-name">{{ serverName }}</div>
     <div class="settings-container">
       <span class="settings-icon" (click)="toggleDropdown()">⚙️</span>
-
-      <!-- Dropdown Menu for Server Settings -->
       <div class="dropdown-menu" *ngIf="showDropdown">
-        <div class="dropdown-item" 
-          
-          (click)="createCategory()">
-          Create New Category
-        </div>
-
-        <div class="dropdown-item" 
-            
-            (click)="openServerSettings()">
-          Server Settings
-        </div>
+        <div class="dropdown-item" (click)="createCategory()">Create New Category</div>
+        <div class="dropdown-item" (click)="openServerSettings()">Server Settings</div>
         <div class="dropdown-item leave" (click)="leaveServer()">Leave Server</div>
       </div>
     </div>
@@ -27,10 +16,17 @@
   <div *ngFor="let category of categories" class="category">
     <div class="category-header">
       <span class="category-name">{{ category.name }}</span>
-      <span class="add-icon" (click)="addChannel(category)">+</span>
-      <span class="category-settings-icon" (click)="openCategorySettings(category)">⚙️</span>
+      <span class="add-icon" (click)="navigateToCreateChannel(category._id)">+</span>
+      <div class="category-settings-container">
+        <span class="category-settings-icon" (click)="toggleCategoryDropdown(category)">⚙️</span>
+        <div class="dropdown-menu" *ngIf="category.showSettingsDropdown">
+          <div class="dropdown-item" (click)="openCategorySettings(category)">Category Settings</div>
+          <div class="dropdown-item delete" (click)="deleteCategory(category)">Delete Category</div>
+        </div>
+      </div>
     </div>
 
+    <!-- List of Channels -->
     <div *ngFor="let channel of category.channels" class="channel-item">
       <span *ngIf="channel.type === 'text'">#</span>
       <span *ngIf="channel.type === 'voice'">🔊</span>

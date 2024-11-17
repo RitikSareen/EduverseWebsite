@@ -1,19 +1,38 @@
 <div>
-  <h2>Create Server</h2>
-  <br><br>
+  <h2>Server List</h2>
 </div>
 
 <div class="server-grid">
   <!-- Create Server Block -->
-   
   <div class="server-block create-server" (click)="navigateToCreateServer()">
     <span>+</span>
   </div>
 
-  <!-- Display Server Blocks with Click Event for Navigation -->
-  <div *ngFor="let server of servers" class="server-block" (click)="navigateToServer(server._id)">
+  <!-- Display Server Blocks -->
+  <div *ngFor="let server of servers" class="server-block">
     <p>{{ server.name }}</p>
+
+    <!-- Show Join Button if not a member -->
+    <button *ngIf="!server.isMember" (click)="openJoinModal(server._id)">
+      Join
+    </button>
+
+    <!-- Show Enter Button if the user is a member -->
+    <button *ngIf="server.isMember" (click)="navigateToServer(server._id)">
+      Enter
+    </button>
   </div>
 </div>
 
-  
+<!-- Join Modal -->
+<div *ngIf="isJoinModalOpen" class="modal">
+  <div class="modal-content">
+    <h2>Join Server</h2>
+    <p>Enter the join code for the server:</p>
+    <input [(ngModel)]="joinCode" type="text" placeholder="Enter join code" />
+    <div class="modal-actions">
+      <button (click)="joinServer()">Join</button>
+      <button (click)="closeJoinModal()">Cancel</button>
+    </div>
+  </div>
+</div>

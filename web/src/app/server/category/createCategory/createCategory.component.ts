@@ -10,6 +10,7 @@ import { ServerService } from '../../../services/server.service';
 })
 export class CreateCategoryComponent implements OnInit {
   serverId: string | null = null; // Server ID from route
+  roles: { role: string }[] = [];
   categoryData: any = {
     name: '',
     allowedRoles: []
@@ -34,18 +35,32 @@ export class CreateCategoryComponent implements OnInit {
       console.error('No Server ID found');
     }
   }
-
   loadRoles(): void {
     if (this.serverId) {
       this.serverService.getServerById(this.serverId, (serverData: any) => {
-        this.categoryData.allowedRoles = serverData.members.map((member: any) => ({
-          role: member.role,
+        const allRoles = serverData.members.map((member: { role: string }) => member.role); // Explicitly type `role` as string
+        const uniqueRoles = [...new Set(allRoles)]; // Remove duplicates
+        this.roles = uniqueRoles.map((role) => ({ role: role as string })); // Cast `role` to string
+        this.categoryData.allowedRoles = this.roles.map((role) => ({
+          role: role.role,
           read: false,
-          write: false
+          write: false,
         }));
       });
     }
   }
+
+  // loadRoles(): void {
+  //   if (this.serverId) {
+  //     this.serverService.getServerById(this.serverId, (serverData: any) => {
+  //       this.categoryData.allowedRoles = serverData.members.map((member: any) => ({
+  //         role: member.role,
+  //         read: false,
+  //         write: false
+  //       }));
+  //     });
+  //   }
+  // }
 
   onSubmit(): void {
     if (!this.categoryData.name) {
@@ -63,5 +78,6 @@ export class CreateCategoryComponent implements OnInit {
       name: this.categoryData.name,
       allowedRoles: this.categoryData.allowedRoles
     });
+    this.router.navigate(['/server', this.serverId, 'categories']);
   }
 }

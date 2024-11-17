@@ -46,7 +46,7 @@
 }
 
 .dropdown-item {
-  color: white;
+  color: rgb(255, 255, 255);
   padding: 8px;
   cursor: pointer;
   &:hover {
@@ -78,3 +78,37 @@
   cursor: pointer;
   color: #888;
 }
+.category-settings-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  background-color: rgb(36, 33, 33);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.dropdown-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-item.delete {
+  color: red;
+}
+
+.dropdown-item.delete:hover {
+  background-color: #ffe5e5;
+}
+

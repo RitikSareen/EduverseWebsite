@@ -55,35 +55,53 @@ export class CategoryService {
   }
 
   // Delete a category by ID
-  deleteCategory(categoryId: string): void {
+  deleteCategory(categoryId: string, callback: () => void): void {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    this.http.delete(`${this.baseUrl}/delete/${categoryId}`, { headers })
+  
+    this.http.delete(`http://localhost:3500/categories/${categoryId}`, { headers })
       .subscribe({
-        next: (response: any) => {
-          console.log('Category deleted successfully:', response);
+        next: () => {
+          console.log('Category deleted successfully');
+          callback();
         },
         error: (error) => {
           console.error('Failed to delete category:', error);
-          alert('Category deletion failed. Please try again.');
+          alert('Failed to delete category. Please try again.');
         }
       });
   }
 
-  // Update a category by ID
-  updateCategory(categoryId: string, updatedData: any): void {
+  getCategoryById(categoryId: string, callback: (data: any) => void): void {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.put(`${this.baseUrl}/update/${categoryId}`, updatedData, { headers })
+    this.http.get<any>(`${this.baseUrl}/category/${categoryId}`, { headers })
+    .subscribe({
+        next: (data: any) => {
+          callback(data); // Pass the data to the provided callback function
+        },
+        error: (error) => {
+          console.error('Failed to fetch category');
+          alert('Failed to fetch category. Please try again.');
+        }
+    });
+  }
+
+  // Update a category by ID
+  updateCategory(categoryId: string, categoryData: any, callback: () => void): void {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    this.http.put(`http://localhost:3500/categories/${categoryId}`, categoryData, { headers })
       .subscribe({
-        next: (response: any) => {
-          console.log('Category updated successfully:', response);
+        next: () => {
+          console.log('Category updated successfully');
+          callback();
         },
         error: (error) => {
           console.error('Failed to update category:', error);
-          alert('Category update failed. Please try again.');
+          alert('Failed to update category. Please try again.');
         }
       });
   }

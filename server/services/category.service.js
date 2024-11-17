@@ -1,6 +1,7 @@
 // Category Service
 const Category = require('../models/category');
 const Server = require('../models/server');
+const TextChannel = require('../models/textChannel');
 
 // Create a new category
 const createCategory = async (req, res) => {
@@ -51,12 +52,14 @@ const getCategories = async (req, res) => {
 
 const getCategoryByID = async (req, res) => {
   try {
-    const category = await Category.findById(req.params.categoryId);
+    const categoryId = req.params.categoryId;
+    const category = await Category.findById(categoryId).populate('channels');
     if (!category) {
       return res.status(404).json({ message: 'Category not found' });
     }
-    res.json(category);
+    res.status(200).json(category);
   } catch (error) {
+    console.error('Error fetching category:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -64,9 +67,22 @@ const getCategoryByID = async (req, res) => {
 // Update category
 const updateCategory = async (req, res) => {
   try {
-    const updatedCategory = await Category.findByIdAndUpdate(req.params.categoryId, req.body, { new: true });
-    res.json(updatedCategory);
+    const categoryId = req.params.categoryId;
+    const updatedData = req.body;
+
+    const updatedCategory = await Category.findByIdAndUpdate(
+      categoryId,
+      updatedData,
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedCategory) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
+
+    res.status(200).json(updatedCategory);
   } catch (error) {
+    console.error('Error updating category:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -74,9 +90,30 @@ const updateCategory = async (req, res) => {
 // Delete category
 const deleteCategory = async (req, res) => {
   try {
-    await Category.findByIdAndDelete(req.params.categoryId);
-    res.status(204).send();
+    const { categoryId } = req.params;
+
+    // Step 1: Find the category to get the associated channels
+    const category = await Category.findById(categoryId).populate('channels');
+    if (!category) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
+
+    // Step 2: Delete all channels associated with the category
+    const channelIds = category.channels.map((channel) => channel._id);
+    await TextChannel.deleteMany({ _id: { $in: channelIds } });
+
+    // Step 3: Delete the category itself
+    const deletedCategory = await Category.findByIdAndDelete(categoryId);
+
+    // Step 4: Remove the category from the server's categories array
+    await Server.findOneAndUpdate(
+      { categories: categoryId },
+      { $pull: { categories: categoryId } }
+    );
+
+    res.status(200).json({ message: 'Category and its channels deleted successfully' });
   } catch (error) {
+    console.error('Error deleting category and its channels:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -86,5 +123,5 @@ module.exports = {
   getCategories,
   updateCategory,
   deleteCategory,
-  getCategoryByID
+  getCategoryByID,
 };

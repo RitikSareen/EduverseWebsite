@@ -50,17 +50,35 @@ const getServerDetails = async (req, res) => {
 };
 
 // Add user to server
-const addUserToServer = async (req, res) => {
+const joinServer = async (req, res) => {
   try {
-    const { userId } = req.body;
-    const role = req.body.role || 'Student'; // Default role set to "Student" if not provided
+    const { serverId } = req.params;
+    const { joinCode } = req.body;
+    const userId = req.user.id; // Authenticated user ID
 
-    const server = await Server.findById(req.params.serverId);
-    server.members.push({ userId, role });
-    
-    const updatedServer = await server.save();
-    res.status(201).json(updatedServer);
+    // Find the server and validate the join code
+    const server = await Server.findById(serverId);
+    if (!server) {
+      return res.status(404).json({ message: 'Server not found' });
+    }
+
+    if (server.joinCode !== joinCode) {
+      return res.status(403).json({ message: 'Invalid join code' });
+    }
+
+    // Check if the user is already a member
+    const isAlreadyMember = server.members.some(member => member.userId.toString() === userId);
+    if (isAlreadyMember) {
+      return res.status(400).json({ message: 'You are already a member of this server' });
+    }
+
+    // Add the user as a student
+    server.members.push({ userId, role: 'Student' });
+    await server.save();
+
+    res.status(200).json({ message: 'Successfully joined the server' });
   } catch (error) {
+    console.error('Error joining server:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -77,15 +95,62 @@ const updateServer = async (req, res) => {
 
 const getAllServers = async (req, res) => {
   try {
-    console.log('getAllServers called'); // Log the function call
-    const servers = await Server.find(); // Adjust query as needed
-    console.log('Servers fetched successfully:', servers);
-    res.status(200).json(servers);
+    const userId = req.user.id;
+
+    const servers = await Server.find().lean(); // Fetch all servers
+
+    const serversWithMembership = servers.map(server => {
+      const isMember = server.members.some(member => member.userId.toString() === userId);
+      return {
+        ...server,
+        isMember,
+      };
+    });
+
+    res.status(200).json(serversWithMembership);
   } catch (error) {
-    console.error('Error fetching servers:', error); // Log the error in detail
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error fetching servers:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
+const updateMemberRole = async (req, res) => {
+  try {
+    const { serverId, memberId } = req.params;
+    const { role } = req.body;
+
+    const server = await Server.findById(serverId);
+    if (!server) {
+      return res.status(404).json({ message: 'Server not found' });
+    }
+
+    const member = server.members.find((m) => m.userId.toString() === memberId);
+    if (!member) {
+      return res.status(404).json({ message: 'Member not found in this server' });
+    }
+
+    member.role = role;
+    await server.save();
+
+    res.status(200).json({ message: 'Member role updated successfully' });
+  } catch (error) {
+    console.error('Error updating member role:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+// const getAllServers = async (req, res) => {
+//   try {
+//     console.log('getAllServers called'); // Log the function call
+//     const servers = await Server.find(); // Adjust query as needed
+//     console.log('Servers fetched successfully:', servers);
+//     res.status(200).json(servers);
+//   } catch (error) {
+//     console.error('Error fetching servers:', error); // Log the error in detail
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
 
 // Remove user from server
 const removeUserFromServer = async (req, res) => {
@@ -100,10 +165,11 @@ const removeUserFromServer = async (req, res) => {
 };
 
 module.exports = {
+  updateMemberRole,
   createServer,
   getAllServers,
   getServerDetails,
-  addUserToServer,
+  joinServer,
   updateServer,
   removeUserFromServer,
 };

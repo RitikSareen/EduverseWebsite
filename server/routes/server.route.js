@@ -1,7 +1,7 @@
 // Server Routes
 const express = require('express');
 const router = express.Router();
-const { createServer, getServerDetails, addUserToServer, updateServer, removeUserFromServer, getAllServers } = require('../services/server.service');
+const { createServer, getServerDetails, joinServer, updateServer, removeUserFromServer, getAllServers, updateMemberRole } = require('../services/server.service');
 
 // Create a new server
 router.post('/create', createServer);
@@ -11,7 +11,9 @@ router.get('/all', getAllServers);
 router.get('/:serverId', getServerDetails);
 
 // Add user to server
-router.post('/:serverId/add-user', addUserToServer);
+router.post('/:serverId/join', joinServer);
+
+router.put('/:serverId/members/:memberId/role', updateMemberRole);
 
 // Update server details
 router.put('/:serverId', updateServer);

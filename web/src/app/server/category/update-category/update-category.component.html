@@ -1,1 +1,44 @@
-<p>update-category works!</p>
+<div>
+    <h2>Update Category</h2>
+    <form (ngSubmit)="onSubmit()">
+      <!-- Category Name Input -->
+      <label for="categoryName">Category Name:</label>
+      <input
+        type="text"
+        id="categoryName"
+        [(ngModel)]="categoryData.name"
+        name="categoryName"
+        required
+      />
+  
+      <h3>Roles and Permissions</h3>
+      <table>
+        <tr>
+          <th>Role</th>
+          <th>Read</th>
+          <th>Write</th>
+        </tr>
+        <tr *ngFor="let role of categoryData.allowedRoles">
+          <td>{{ role.role }}</td>
+          <td>
+            <input
+              type="checkbox"
+              [(ngModel)]="role.read"
+              name="read_{{ role.role }}"
+            />
+          </td>
+          <td>
+            <input
+              type="checkbox"
+              [(ngModel)]="role.write"
+              name="write_{{ role.role }}"
+            />
+          </td>
+        </tr>
+      </table>
+  
+      <!-- Submit Button -->
+      <button type="submit">Update Category</button>
+    </form>
+  </div>
+  

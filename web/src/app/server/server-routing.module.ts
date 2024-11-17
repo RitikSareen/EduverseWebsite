@@ -10,6 +10,7 @@ import { CreateCategoryComponent } from './category/createCategory/createCategor
 import { ListCategoryComponent } from './category/list-category/list-category.component';
 import { ListChannelComponent } from './channel/list-channel/list-channel.component';
 import { UpdateServerComponent } from './update-server/update-server.component';
+import { UpdateCategoryComponent } from './category/update-category/update-category.component';
 // import { DefaultViewComponent } from './default-view/default-view.component';
 
 const routes: Routes = [
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: 'categories/create',
         component: CreateCategoryComponent // Route for creating a new category
+      },
+      {
+        path: 'categories/:categoryId/settings',
+        component: UpdateCategoryComponent // Route for category settings
       },
       {
         path: 'updateServer',
