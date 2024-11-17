@@ -5,17 +5,26 @@ const Server = require('../models/server');
 // Create a new category
 const createCategory = async (req, res) => {
   try {
-    const serverId = req.params.serverId; // Get the server ID from the URL parameters
-    const { name, allowedRoles } = req.body; // Extract name and allowedRoles from the request body
+    const serverId = req.params.serverId;
+    const { name, allowedRoles } = req.body;
 
-    // Step 1: Create the new category
+    // Ensure allowedRoles is correctly structured
+    if (!allowedRoles || !Array.isArray(allowedRoles)) {
+      return res.status(400).json({ message: 'Invalid allowedRoles format' });
+    }
+
+    // Create new category
     const newCategory = new Category({
       name,
-      allowedRoles
+      allowedRoles: allowedRoles.map(role => ({
+        role: role.role,
+        read: role.read || false,
+        write: role.write || false
+      }))
     });
     const savedCategory = await newCategory.save();
 
-    // Step 2: Update the server's categories array to include the new category
+    // Add category to server
     await Server.findByIdAndUpdate(
       serverId,
       { $push: { categories: savedCategory._id } },

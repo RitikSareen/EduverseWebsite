@@ -10,11 +10,11 @@ import { ServerService } from '../../../services/server.service';
 })
 export class CreateCategoryComponent implements OnInit {
   serverId: string | null = null; // Server ID from route
-  categoryData = {
+  categoryData: any = {
     name: '',
-    allowedRoles: [] as { role: string; read: boolean; write: boolean }[]
+    allowedRoles: []
   };
-  roles: string[] = []; // List of roles in the server
+   // List of roles in the server
 
   constructor(
     private categoryService: CategoryService,
@@ -36,12 +36,15 @@ export class CreateCategoryComponent implements OnInit {
   }
 
   loadRoles(): void {
-    this.serverService.getServerById(this.serverId, (serverData: any) => {
-      this.categoryData.allowedRoles = serverData.members.map((member: any) => ({
-        role: member.role,
-        read: false,
-        write: false
-      }));
+    if (this.serverId) {
+      this.serverService.getServerById(this.serverId, (serverData: any) => {
+        this.categoryData.allowedRoles = serverData.members.map((member: any) => ({
+          role: member.role,
+          read: false,
+          write: false
+        }));
+      });
+    }
   }
 
   onSubmit(): void {
@@ -50,17 +53,15 @@ export class CreateCategoryComponent implements OnInit {
       return;
     }
 
-    if (this.categoryData.allowedRoles.length === 0) {
-      alert('At least one role permission is required');
-      return;
-    }
-
     if (this.serverId === null) {
       console.error('Server ID is null');
       return;
     }
 
-    // Call the service to create a category
-    this.categoryService.createCategory(this.serverId, this.categoryData);
+    // Send data to backend
+    this.categoryService.createCategory(this.serverId, {
+      name: this.categoryData.name,
+      allowedRoles: this.categoryData.allowedRoles
+    });
   }
 }

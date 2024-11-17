@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class CategoryService {
 
   constructor(
     private http: HttpClient, 
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   // Create a new category under a specific server
@@ -27,7 +29,7 @@ export class CategoryService {
       .subscribe({
         next: (response: any) => {
           console.log('Category created successfully:', response);
-          // this.router.navigate([`/server/${serverId}`]); // Redirect to the server page after creation
+          this.router.navigate([`/server/${serverId}`]);
         },
         error: (error) => {
           console.error('Failed to create category:', error);

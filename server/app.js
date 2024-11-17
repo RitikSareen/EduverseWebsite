@@ -10,12 +10,9 @@ const jwt = require('jsonwebtoken');
 const userRoutes = require('./routes/user.route');
 const serverRoutes = require('./routes/server.route');
 const categoryRoutes = require('./routes/category.route');
-const assignmentChannelRoutes = require('./routes/assignmentChannel.route');
-const voiceChannelRoutes = require('./routes/voiceChannel.route');
 const textChannelRoutes = require('./routes/textChannel.route');
 const directMessagesRoutes = require('./routes/directMessage.route');
 // const fileRoutes = require('./routes/file.route');
-const notificationRoutes = require('./routes/notification.route');
 const verifyToken = require('./middleware/auth.guard');
 
 // Import socket setup functions
@@ -23,7 +20,6 @@ const verifyToken = require('./middleware/auth.guard');
 const setupGroupChatSocket = require('./sockets/groupChat.socket');
 const setupDirectMessageSocket = require('./sockets/directChat.socket');
 const setupFileSocket = require('./sockets/file.socket');
-const setupNotificationSocket = require('./sockets/notification.socket');
 
 // Initialize app
 const app = express();
@@ -55,12 +51,9 @@ app.use(cors({
 app.use('/user', userRoutes);
 app.use('/servers', verifyToken, serverRoutes);
 app.use('/categories', verifyToken, categoryRoutes);
-app.use('/assignmentsChannel', verifyToken, assignmentChannelRoutes);
 app.use('/textChannel', verifyToken, textChannelRoutes);
-app.use('/voiceChannel', verifyToken, voiceChannelRoutes);
 app.use('/directMessages', verifyToken, directMessagesRoutes);
 // app.use('/files', verifyToken, fileRoutes);
-app.use('/notifications', verifyToken, notificationRoutes);
 
 // Create HTTP server and set up Socket.IO
 const server = http.createServer(app);
@@ -93,7 +86,6 @@ io.use((socket, next) => {
 // Set up socket handlers
 setupDirectMessageSocket(io);
 setupFileSocket(io);
-setupNotificationSocket(io);
 setupGroupChatSocket(io);
 
 
