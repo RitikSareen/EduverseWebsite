@@ -9,12 +9,12 @@ import { ServerService } from '../../../services/server.service';
   styleUrls: ['./createCategory.component.scss']
 })
 export class CreateCategoryComponent implements OnInit {
-  serverId: string | null = null;
-  categoryName: string = '';
-  roles: string[] = [];
-  allowedRoles: any[] = [
-    { role: 'Admin', visible: true, read: true, write: true } // Default for Admin
-  ];
+  serverId: string | null = null; // Server ID from route
+  categoryData = {
+    name: '',
+    allowedRoles: [] as { role: string; read: boolean; write: boolean }[]
+  };
+  roles: string[] = []; // List of roles in the server
 
   constructor(
     private categoryService: CategoryService,
@@ -22,10 +22,12 @@ export class CreateCategoryComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {}
+  // const id = this.route.parent?.snapshot.paramMap.get('serverId');
+  //   this.serverId = id ? id : null;
 
   ngOnInit(): void {
     const id = this.route.parent?.snapshot.paramMap.get('serverId');
-    this.serverId = id ? id : null; // Explicitly set it to null if undefined
+    this.serverId = id ? id : null;
     if (this.serverId) {
       this.loadRoles();
     } else {
@@ -33,50 +35,32 @@ export class CreateCategoryComponent implements OnInit {
     }
   }
 
-  // Load roles associated with the server
   loadRoles(): void {
-    this.serverService.getServerById(this.serverId!, (serverData: any) => {
-      const existingRoles = serverData.members.map((member: any) => member.role);
-      this.roles = Array.from(new Set(existingRoles)); // Unique roles
-    });
+    this.serverService.getServerById(this.serverId, (serverData: any) => {
+      this.categoryData.allowedRoles = serverData.members.map((member: any) => ({
+        role: member.role,
+        read: false,
+        write: false
+      }));
   }
 
-  // Toggle permission values for a specific role
-  togglePermission(roleIndex: number, permissionType: string): void {
-    this.allowedRoles[roleIndex][permissionType] = !this.allowedRoles[roleIndex][permissionType];
-  }
-
-  // Add a new role with permissions
-  addRolePermission(role: string) {
-    if (!this.allowedRoles.find(r => r.role === role)) {
-      this.allowedRoles.push({ role, visible: false, read: false, write: false });
-    }
-  }
-
-  // Submit the category creation request
-  createCategory(): void {
-    if (!this.serverId) {
-      console.error('Server ID is not set.');
+  onSubmit(): void {
+    if (!this.categoryData.name) {
+      alert('Category name is required');
       return;
     }
 
-    const categoryData = {
-      name: this.categoryName,
-      allowedRoles: this.allowedRoles
-    };
+    if (this.categoryData.allowedRoles.length === 0) {
+      alert('At least one role permission is required');
+      return;
+    }
 
-    this.categoryService.createCategory(
-      this.serverId,
-      categoryData,
-      (response) => {
-        console.log('Category created successfully:', response);
-        this.router.navigate([`/servers/${this.serverId}/categories`]); // Redirect to categories or another page
-      },
-      (error) => {
-        console.error('Error creating category:', error);
-      }
-    );
+    if (this.serverId === null) {
+      console.error('Server ID is null');
+      return;
+    }
+
+    // Call the service to create a category
+    this.categoryService.createCategory(this.serverId, this.categoryData);
   }
-
-  
 }

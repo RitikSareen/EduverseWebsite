@@ -5,9 +5,8 @@ const categorySchema = new mongoose.Schema({
   channels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'TextChannel' }],
   allowedRoles: {
     role: { type: String, required: true }, // Custom roles like admin, teacher, student, etc.
-    visible: [{ type: Boolean }], // Custom roles allowed to see the channel
-    read: [{ type: Boolean }],    // Custom roles allowed to read the channel
-    write: [{ type: Boolean }],   // Custom roles allowed to write in the channel
+    read: [{ type: Boolean, default: false }],    // Custom roles allowed to read the channel
+    write: [{ type: Boolean, default: false }],   // Custom roles allowed to write in the channel
   },
 });
 

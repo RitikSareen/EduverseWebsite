@@ -5,14 +5,22 @@ const Server = require('../models/server');
 // Create a new category
 const createCategory = async (req, res) => {
   try {
-    const { name, allowedRoles } = req.body;
-    const newCategory = new Category({ name, allowedRoles, channels: [] });
+    const serverId = req.params.serverId; // Get the server ID from the URL parameters
+    const { name, allowedRoles } = req.body; // Extract name and allowedRoles from the request body
+
+    // Step 1: Create the new category
+    const newCategory = new Category({
+      name,
+      allowedRoles
+    });
     const savedCategory = await newCategory.save();
 
-    // Link to server
-    const server = await Server.findById(req.params.serverId);
-    server.categories.push(savedCategory._id);
-    await server.save();
+    // Step 2: Update the server's categories array to include the new category
+    await Server.findByIdAndUpdate(
+      serverId,
+      { $push: { categories: savedCategory._id } },
+      { new: true }
+    );
 
     res.status(201).json(savedCategory);
   } catch (error) {
