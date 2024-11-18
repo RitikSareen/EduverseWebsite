@@ -25,7 +25,7 @@ export class ServerService {
       .subscribe({
         next: (response: any) => {
           console.log('Server created successfully:', response);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/home/servers']);
         },
         error: (error) => {
           console.error('Failed to create server:', error);

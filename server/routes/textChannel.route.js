@@ -12,31 +12,31 @@ const {
   deleteMessageFromTextChannel
 } = require('../services/textChannel.service');
 
-// Create a new text channel in a category
-router.post('/servers/:serverId/categories/:categoryId/text-channels', createTextChannel);
+// Create a new text channel under a category
+router.post('/create/:categoryId', createTextChannel);
 
 // Get details of a specific text channel
-router.get('/servers/:serverId/categories/:categoryId/text-channels/:channelId', getTextChannelDetails);
+router.get('/servers/:serverId/categories/:categoryId/textChannels/:channelId', getTextChannelDetails);
 
 // Get all text channels in a category
-router.get('/servers/:serverId/categories/:categoryId/text-channels', getAllTextChannels);
+router.get('/servers/:serverId/categories/:categoryId/textChannels', getAllTextChannels);
 
-// Get all messages in a text channel
-router.get('/servers/:serverId/categories/:categoryId/text-channels/:channelId/messages', getAllMessagesInTextChannel);
+// Get all messages in a specific text channel
+router.get('/servers/:serverId/categories/:categoryId/textChannels/:channelId/messages', getAllMessagesInTextChannel);
 
-// Update text channel details
-router.put('/servers/:serverId/categories/:categoryId/text-channels/:channelId', updateTextChannel);
+// Update details of a specific text channel
+router.put('/servers/:serverId/categories/:categoryId/textChannels/:channelId', updateTextChannel);
 
-// Delete a text channel
-router.delete('/servers/:serverId/categories/:categoryId/text-channels/:channelId', deleteTextChannel);
+// Delete a specific text channel
+router.delete('/servers/:serverId/categories/:categoryId/textChannels/:channelId', deleteTextChannel);
 
-// Add a message to a text channel
-router.post('/servers/:serverId/categories/:categoryId/text-channels/:channelId/messages', addMessageToTextChannel);
+// Add a new message to a text channel
+router.post('/servers/:serverId/categories/:categoryId/textChannels/:channelId/messages', addMessageToTextChannel);
 
-// Update a message in a text channel
-router.put('/servers/:serverId/categories/:categoryId/text-channels/:channelId/messages/:messageId', updateMessageInTextChannel);
+// Update a specific message in a text channel
+router.put('/servers/:serverId/categories/:categoryId/textChannels/:channelId/messages/:messageId', updateMessageInTextChannel);
 
-// Delete a message from a text channel
-router.delete('/servers/:serverId/categories/:categoryId/text-channels/:channelId/messages/:messageId', deleteMessageFromTextChannel);
+// Delete a specific message from a text channel
+router.delete('/servers/:serverId/categories/:categoryId/textChannels/:channelId/messages/:messageId', deleteMessageFromTextChannel);
 
 module.exports = router;

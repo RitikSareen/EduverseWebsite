@@ -1,6 +1,7 @@
 <div>
-    <h2>Create Channel</h2>
+    <h2>Create Text Channel</h2>
     <form (ngSubmit)="onSubmit()">
+      <!-- Channel Name Input -->
       <label for="channelName">Channel Name:</label>
       <input
         type="text"
@@ -10,19 +11,34 @@
         required
       />
   
-      <label for="channelType">Channel Type:</label>
-      <select
-        id="channelType"
-        [(ngModel)]="channelData.type"
-        name="channelType"
-        required
-      >
-        <option value="text">Text</option>
-        <option value="voice">Voice</option>
-        <option value="assignment">Assignment</option>
-      </select>
+      <h3>Roles and Permissions</h3>
+      <table>
+        <tr>
+          <th>Role</th>
+          <th>Read</th>
+          <th>Write</th>
+        </tr>
+        <tr *ngFor="let role of channelData.allowedRoles">
+          <td>{{ role.role }}</td>
+          <td>
+            <input
+              type="checkbox"
+              [(ngModel)]="role.read"
+              name="read_{{ role.role }}"
+            />
+          </td>
+          <td>
+            <input
+              type="checkbox"
+              [(ngModel)]="role.write"
+              name="write_{{ role.role }}"
+            />
+          </td>
+        </tr>
+      </table>
   
-      <button type="submit">Create Channel</button>
+      <!-- Submit Button -->
+      <button type="submit">Create Text Channel</button>
     </form>
   </div>
   

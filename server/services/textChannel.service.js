@@ -1,18 +1,29 @@
 const TextChannel = require('../models/textChannel');
 const Category = require('../models/category');
+const Server = require('../models/server');
 
 // Create a new text channel
 const createTextChannel = async (req, res) => {
   try {
     const { serverId, categoryId } = req.params;
-    const category = await Category.findById(categoryId);
-    if (!category || category.server.toString() !== serverId) {
-      return res.status(404).json({ message: 'Category not found or does not belong to the specified server' });
-    }
+    const { name, allowedRoles } = req.body;
 
-    const textChannel = new TextChannel({ ...req.body, category: categoryId });
-    const savedChannel = await textChannel.save();
-    res.status(201).json(savedChannel);
+    // Step 1: Create the text channel
+    const newTextChannel = new TextChannel({
+      channelName: name,
+      allowedRoles,
+    });
+
+    const savedTextChannel = await newTextChannel.save();
+
+    // Step 2: Add the text channel to the category
+    await Category.findByIdAndUpdate(
+      categoryId,
+      { $push: { channels: savedTextChannel._id } },
+      { new: true }
+    );
+
+    res.status(201).json(savedTextChannel);
   } catch (error) {
     console.error('Error creating text channel:', error);
     res.status(500).json({ message: 'Internal server error' });

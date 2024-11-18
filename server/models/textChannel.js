@@ -34,11 +34,11 @@ const messageSchema = new mongoose.Schema({
 // Define Text Channel Schema
 const textChannelSchema = new mongoose.Schema({
   channelName: { type: String, required: true, trim: true },
-  allowedRoles: {
+  allowedRoles: [{
     role: { type: String, required: true }, // Custom roles like admin, teacher, student, etc.
     read: [{ type: Boolean, default: false }],    // Custom roles allowed to read the channel
     write: [{ type: Boolean, default: false }],   // Custom roles allowed to write in the channel
-  },
+  }],
   messages: [messageSchema], // Array of embedded messages
 }, {
   timestamps: true, // Automatically add createdAt and updatedAt fields

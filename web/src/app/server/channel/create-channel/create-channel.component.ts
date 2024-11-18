@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServerService } from '../../../services/server.service';
+import { GroupChatService } from '../../../services/groupChat.service';
+import { TextChannelService } from '../../../services/textChannel.service';
 
 @Component({
   selector: 'app-create-channel',
@@ -8,39 +10,66 @@ import { ServerService } from '../../../services/server.service';
   styleUrls: ['./create-channel.component.scss']
 })
 export class CreateChannelComponent implements OnInit {
-  categoryId!: string;
-  channelData = {
+  channelData: any = {
     name: '',
-    type: 'text'
+    allowedRoles: [] // Holds role-based permissions
   };
+  serverId: string | null = null;
+  categoryId: string | null = null;
+  roles: any[] = []; // List of roles available in the server
 
   constructor(
     private serverService: ServerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private textChannelService: TextChannelService
   ) {}
 
   ngOnInit(): void {
-    const categoryId = this.route.snapshot.paramMap.get('categoryId');
-    if (categoryId) {
-      this.categoryId = categoryId;
-    } else {
-      console.error('No category ID found');
+    const sId = this.route.parent?.snapshot.paramMap.get('serverId');
+    const cId = this.route.snapshot.paramMap.get('categoryId'); // Use current route here
+  
+    console.log('Server ID:', sId);
+    console.log('Category ID:', cId);
+  
+    this.serverId = sId ? sId : null;
+    this.categoryId = cId ? cId : null;
+  
+    if (this.serverId) {
+      this.loadRoles();
     }
   }
 
+  // Load roles from the server
+  loadRoles(): void {
+    this.serverService.getServerById(this.serverId!, (serverData: any) => {
+      const allRoles = serverData.members.map((member: any) => member.role);
+      const uniqueRoles = [...new Set(allRoles)]; // Remove duplicates
+      this.roles = uniqueRoles.map((role) => ({ role: role as string }));
+
+      this.channelData.allowedRoles = this.roles.map((role) => ({
+        role: role.role,
+        read: false,
+        write: false
+      }));
+    });
+  }
+
+  // Handle form submission
   onSubmit(): void {
     if (!this.channelData.name) {
-      alert('Channel name is required!');
+      alert('Channel name is required.');
       return;
     }
 
-    // this.serverService.createChannel(this.categoryId, this.channelData, () => {
-    //   alert('Channel created successfully!');
-    //   this.router.navigate(['/server', this.categoryId]); // Navigate back to the server
-    // }, (error: any) => {
-    //   console.error('Failed to create channel:', error);
-    //   alert('Failed to create channel. Please try again.');
-    // });
+    if (this.serverId && this.categoryId) {
+      this.textChannelService.createChannel(this.serverId, this.categoryId, this.channelData, (response: any) => {
+        alert('Text channel created successfully!');
+        this.router.navigate([`/server/${this.serverId}`]);
+      }, (error: any) => {
+        console.error('Error creating channel:', error);
+        alert('Failed to create text channel. Please try again.');
+      });
+    }
   }
 }

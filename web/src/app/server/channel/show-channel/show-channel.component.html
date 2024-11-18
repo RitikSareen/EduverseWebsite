@@ -1,1 +1,7 @@
-<p>show-channel works!</p>
+<div>Hello</div>
+<div class="messages-container">
+    <div *ngFor="let message of messages" class="message">
+      <p>{{ message.content }}</p>
+    </div>
+  </div>
+  

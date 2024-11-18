@@ -14,9 +14,10 @@
 
   <!-- List of Categories and Channels -->
   <div *ngFor="let category of categories" class="category">
+    <!-- Category Header -->
     <div class="category-header">
       <span class="category-name">{{ category.name }}</span>
-      <span class="add-icon" (click)="navigateToCreateChannel(category._id)">+</span>
+      <span class="add-icon" (click)="navigateToCreateChannel(category)">+</span>
       <div class="category-settings-container">
         <span class="category-settings-icon" (click)="toggleCategoryDropdown(category)">⚙️</span>
         <div class="dropdown-menu" *ngIf="category.showSettingsDropdown">
@@ -26,13 +27,12 @@
       </div>
     </div>
 
-    <!-- List of Channels -->
+    <!-- List of Channels under Category -->
     <div *ngFor="let channel of category.channels" class="channel-item">
-      <span *ngIf="channel.type === 'text'">#</span>
-      <span *ngIf="channel.type === 'voice'">🔊</span>
-      <span *ngIf="channel.type === 'assignment'">📄</span>
-      {{ channel.name }}
-      <span class="channel-settings-icon" (click)="openChannelSettings(channel)">⚙️</span>
+      <div (click)="selectChannel(category.id,channel.id)" class="channel-item">
+        {{ channel.channelName }}
+      </div>
+      <span class="category-settings-icon" (click)="toggleCategoryDropdown(category)">⚙️</span>
     </div>
   </div>
 </div>

@@ -51,7 +51,7 @@ app.use(cors({
 app.use('/user', userRoutes);
 app.use('/servers', verifyToken, serverRoutes);
 app.use('/categories', verifyToken, categoryRoutes);
-app.use('/textChannel', verifyToken, textChannelRoutes);
+app.use('/textChannels', verifyToken, textChannelRoutes);
 app.use('/directMessages', verifyToken, directMessagesRoutes);
 // app.use('/files', verifyToken, fileRoutes);
 

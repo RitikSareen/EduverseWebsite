@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ServerService } from '../../services/server.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../../services/category.service';
+import { TextChannelService } from '../../services/textChannel.service';
+
 
 @Component({
   selector: 'app-server-sidebar',
@@ -16,12 +18,16 @@ export class ServerSidebarComponent implements OnInit {
   showDropdown: boolean = false;
   server: any;
   serverId: string | null = null;
+  selectedChannelId: string | null = null;
+
 
   constructor(
     private serverService: ServerService, 
     private categoryService: CategoryService,
+    private textChannelService: TextChannelService,
     private route: ActivatedRoute, 
-    private router: Router
+    private router: Router,
+   
   ) {}
 
   ngOnInit(): void {
@@ -43,11 +49,19 @@ export class ServerSidebarComponent implements OnInit {
         this.server = data;
         this.serverName = data.name;
         this.categories = data.categories;
-        this.channels=data.categories.channels;
+  
+        // Ensure each category has channels initialized
+        this.categories.forEach((category: any) => {
+          if (!category.channels) {
+            category.channels = [];
+          }
+        });
+  
         this.members = data.members;
       });
     }
   }
+  
 
   toggleDropdown(): void {
     this.showDropdown = !this.showDropdown;
@@ -104,13 +118,17 @@ export class ServerSidebarComponent implements OnInit {
     }
   }
 
-  navigateToCreateChannel(categoryId: string): void {
-    this.router.navigate(['/server', this.serverId, 'categories', categoryId, 'channels', 'create']);
+  navigateToCreateChannel(category: any): void {
+    if (!category || !category._id) {
+      console.error('Category ID is missing or undefined');
+      return;
+    }
+  
+    this.router.navigate([`/server/${this.serverId}/categories/${category._id}/textChannels/create-channel`]);
   }
 
-  addChannelToCategory(category: any): void {
-    console.log(`Adding a new channel to Category: ${category.name}`);
-    // Logic for adding a channel within the category
+  selectChannel(categoryId: string,channelId: string): void {
+    this.router.navigate([`/server/${this.serverId}/categories/${categoryId}/textChannels/${channelId}`]);
   }
 
   openChannelSettings(channel: any): void {

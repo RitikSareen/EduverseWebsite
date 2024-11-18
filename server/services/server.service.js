@@ -33,21 +33,32 @@ const createServer = async (req, res) => {
 const getServerDetails = async (req, res) => {
   try {
     const server = await Server.findById(req.params.serverId)
-      .populate('categories') // Populate categories if needed
+      .populate({
+        path: 'categories', // Populate categories
+        populate: {
+          path: 'channels', // Nested population for TextChannel
+          model: 'TextChannel', // Reference TextChannel model
+          select: 'channelName allowedRoles messages', // Include only necessary fields
+        },
+      })
       .populate({
         path: 'members.userId', // Path within nested array
         model: 'User', // Model to populate from
-        select: 'username email' // Select only necessary fields
+        select: 'username email', // Select only necessary fields
       });
 
-    // console.log('Server with populated members:', server); // Log populated data for verification
-    // console.log('Populated server details:', JSON.stringify(server, null, 2));
+    if (!server) {
+      return res.status(404).json({ message: 'Server not found' });
+    }
+
     res.json(server);
   } catch (error) {
-    console.error('Error fetching server details:', error); // Log any errors
+    console.error('Error fetching server details:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+
 
 // Add user to server
 const joinServer = async (req, res) => {
