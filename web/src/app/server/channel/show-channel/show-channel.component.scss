@@ -1,0 +1,75 @@
+.message-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+    background-color: #36393f;
+    color: #ffffff;
+  }
+  
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+  }
+  
+  .message {
+    margin-bottom: 10px;
+  
+    .message-metadata {
+      font-size: 12px;
+      color: #b9bbbe;
+  
+      .sender-name {
+        font-weight: bold;
+        color: #ffffff;
+      }
+  
+      .timestamp {
+        margin-left: 5px;
+        font-size: 10px;
+        color: #72767d;
+      }
+    }
+  
+    .message-content {
+      margin-left: 20px;
+      font-size: 14px;
+    }
+  }
+  
+  .message-input {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #40444b;
+    border-radius: 5px;
+  
+    .message-textarea {
+      flex: 1;
+      resize: none;
+      border: none;
+      outline: none;
+      background: #2f3136;
+      color: #ffffff;
+      padding: 8px 10px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+  
+    .send-button {
+      margin-left: 10px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #5865f2;
+      color: #ffffff;
+      font-size: 14px;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: #4752c4;
+      }
+    }
+  }
+  

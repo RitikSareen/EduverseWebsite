@@ -1,7 +1,28 @@
-<div>Hello</div>
-<div class="messages-container">
+<div class="message-container">
+  <!-- Messages Section -->
+  <div class="messages">
     <div *ngFor="let message of messages" class="message">
-      <p>{{ message.content }}</p>
+      <div class="message-metadata">
+        <!-- Sender Name -->
+        <span class="sender-name">{{ message.senderName }}</span>
+        <!-- Timestamp -->
+        <span class="timestamp">{{ message.createdAt | date: 'short' }}</span>
+      </div>
+      <!-- Message Content -->
+      <div class="message-content">
+        {{ message.content }}
+      </div>
     </div>
   </div>
-  
+
+  <!-- Input Section -->
+  <div class="message-input">
+    <textarea
+      [(ngModel)]="newMessage"
+      placeholder="Type your message..."
+      class="message-textarea"
+      rows="1"
+    ></textarea>
+    <button (click)="sendMessage()" class="send-button">Send</button>
+  </div>
+</div>

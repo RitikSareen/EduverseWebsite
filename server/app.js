@@ -59,34 +59,22 @@ app.use('/directMessages', verifyToken, directMessagesRoutes);
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: 'http://localhost:4200',
-    methods: ['GET', 'POST']
-  }
+    origin: 'http://localhost:4200', // Adjust to your client origin
+    methods: ['GET', 'POST'],
+  },
 });
 
-// Socket authentication middleware
-io.use((socket, next) => {
-  const token = socket.handshake.query.token; // Token should be sent during the connection request
-  if (token) {
-    try {
-      // Verify the token and extract user ID
-      const decoded = jwt.verify(token, 'YOUR_SECRET_KEY'); // Replace 'YOUR_SECRET_KEY' with your actual secret key
-      socket.userId = decoded.userId; // Attach user ID to the socket instance
-      next(); // Proceed with the connection
-    } catch (error) {
-      console.error('Invalid token:', error);
-      next(new Error('Authentication error')); // Authentication failed, prevent connection
-    }
-  } else {
-    console.error('No token provided');
-    next(new Error('Authentication error')); // No token, prevent connection
-  }
+app.use((req, res, next) => {
+  req.io = io;
+  next();
 });
 
+// Set up WebSocket functionality
+setupGroupChatSocket(io);
 // Set up socket handlers
 setupDirectMessageSocket(io);
 setupFileSocket(io);
-setupGroupChatSocket(io);
+
 
 
 // Define a simple route

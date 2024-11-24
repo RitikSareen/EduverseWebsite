@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -35,12 +36,38 @@ export class TextChannelService {
         },
       });
   }
-  getMessages(channelId: string) {
-    const token = localStorage.getItem('token')?.replace(/^"|"$/g, '');
+
+  getMessages(categoryId: string, textChannelId: string): Observable<any[]> {
+    const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean token
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any[]>(`${this.baseUrl}/${channelId}/messages`, { headers });
+    const url = `${this.baseUrl}/${categoryId}/${textChannelId}/messages`;
+
+    return this.http.get<any[]>(url, { headers });
   }
 
-  // Additional methods for managing text channels (if needed)
-  // Example: Fetch channels, delete channel, update channel, etc.
+  createMessage(categoryId: string, channelId: string, messageData: any): Observable<any> {
+    const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean the token
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const url = `${this.baseUrl}/${categoryId}/${channelId}/messages`; // Correct URL
+
+    return this.http.post<any>(url, messageData, { headers });
+  }
+
+  // getMessages(categoryId: string, textChannelId: string): Observable<any[]> {
+  //   const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean token
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   const url = `${this.baseUrl}/${categoryId}/${textChannelId}/messages`;
+  
+  //   return this.http.get<any[]>(url, { headers });
+  // }
+  
+  // createMessage(categoryId: string, channelId: string, messageData: any): Observable<any> {
+  //   const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean the token
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   const url = `${this.baseUrl}/${categoryId}/${channelId}/messages`; // Correct URL
+    
+  //   return this.http.post<any>(url, messageData, { headers });
+  // }
+
+
 }

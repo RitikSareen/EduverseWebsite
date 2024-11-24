@@ -127,8 +127,14 @@ export class ServerSidebarComponent implements OnInit {
     this.router.navigate([`/server/${this.serverId}/categories/${category._id}/textChannels/create-channel`]);
   }
 
-  selectChannel(categoryId: string,channelId: string): void {
-    this.router.navigate([`/server/${this.serverId}/categories/${categoryId}/textChannels/${channelId}`]);
+  selectChannel(categoryId: string, textChannelId: string): void {
+    if (!categoryId || !textChannelId) {
+      console.error('Invalid parameters:', { categoryId, textChannelId });
+      return;
+    }
+  
+    // Navigate to the correct route
+    this.router.navigate([`server/${this.serverId}/categories/${categoryId}/textChannels/${textChannelId}`]);
   }
 
   openChannelSettings(channel: any): void {

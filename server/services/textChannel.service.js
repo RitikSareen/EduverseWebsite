@@ -1,6 +1,7 @@
 const TextChannel = require('../models/textChannel');
 const Category = require('../models/category');
 const Server = require('../models/server');
+const User = require('../models/user');
 
 // Create a new text channel
 const createTextChannel = async (req, res) => {
@@ -72,21 +73,27 @@ const getAllTextChannels = async (req, res) => {
 // Get all messages in a text channel
 const getAllMessagesInTextChannel = async (req, res) => {
   try {
-    const { channelId } = req.params;
+    const { textChannelId } = req.params;
 
-    const textChannel = await TextChannel.findById(channelId);
+    const textChannel = await TextChannel.findById(textChannelId).populate('messages.sender_id', 'firstName lastName');
     if (!textChannel) {
       return res.status(404).json({ message: 'Text Channel not found' });
     }
 
-    res.status(200).json(textChannel.messages);
+    const messagesWithSenderNames = textChannel.messages.map((message) => ({
+      _id: message._id,
+      content: message.content,
+      senderName: `${message.sender_id.firstName} ${message.sender_id.lastName}`,
+      createdAt: message.createdAt, // Use createdAt directly from Mongoose
+    }));
+
+    res.json(messagesWithSenderNames);
   } catch (error) {
-    console.error('Error getting messages in text channel:', error);
+    console.error('Error fetching messages:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-// Update text channel details
 const updateTextChannel = async (req, res) => {
   try {
     const { serverId, categoryId, channelId } = req.params;
@@ -128,33 +135,82 @@ const deleteTextChannel = async (req, res) => {
   }
 };
 
-// Add a message to a text channel
-const addMessageToTextChannel = async (req, res) => {
+const addMessageToTextChannel = async ({ params, body, user }) => {
   try {
-    const { serverId, categoryId, channelId } = req.params;
-    const { content, files } = req.body;
+    const { categoryId, textChannelId } = params;
+    const { content } = body;
 
-    const textChannel = await TextChannel.findOne({ _id: channelId, category: categoryId });
-    if (!textChannel) {
-      return res.status(404).json({ message: 'Text Channel not found' });
+    if (!categoryId || !textChannelId || !content) {
+      throw new Error('Missing required fields');
     }
 
+    // Find the text channel
+    const textChannel = await TextChannel.findById(textChannelId);
+    if (!textChannel) {
+      throw new Error('Text Channel not found');
+    }
+
+    // Create the new message
     const newMessage = {
-      sender_id: req.user.id,
+      sender_id: user.id, // Ensure sender_id is properly set
       content,
-      files: files || [], // Files metadata (like fileName, fileType, fileUrl) embedded in the message
+      timestamp: new Date(),
     };
 
+    // Add the new message to the text channel
     textChannel.messages.push(newMessage);
     await textChannel.save();
-    res.status(201).json(newMessage);
+
+    // Fetch the sender's name
+    const sender = await User.findById(user.id, 'firstName lastName');
+    if (!sender) {
+      throw new Error('Sender not found');
+    }
+
+    return {
+      ...newMessage, // Include the original message fields
+      senderName: `${sender.firstName} ${sender.lastName}`, // Add sender's name
+    };
   } catch (error) {
     console.error('Error adding message to text channel:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    throw error;
   }
 };
 
-// Update a message in a text channel
+
+
+// const addMessageToTextChannel = async ({ params, body, user }) => {
+//   try {
+//     const { categoryId, textChannelId } = params;
+//     const { content } = body;
+
+//     if (!categoryId || !textChannelId || !content) {
+//       throw new Error('Missing required fields');
+//     }
+
+//     // Find the text channel
+//     const textChannel = await TextChannel.findById(textChannelId);
+//     if (!textChannel) {
+//       throw new Error('Text Channel not found');
+//     }
+
+//     const newMessage = {
+//       sender_id: user.id, // Ensure sender_id is properly set
+//       content,
+//       timestamp: new Date(),
+//     };
+
+//     // Save the message to the text channel
+//     textChannel.messages.push(newMessage);
+//     await textChannel.save();
+
+//     return newMessage;
+//   } catch (error) {
+//     console.error('Error adding message to text channel:', error);
+//     throw error;
+//   }
+// };
+
 const updateMessageInTextChannel = async (req, res) => {
   try {
     const { channelId, messageId } = req.params;

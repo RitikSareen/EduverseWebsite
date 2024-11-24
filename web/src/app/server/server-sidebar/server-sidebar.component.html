@@ -29,7 +29,7 @@
 
     <!-- List of Channels under Category -->
     <div *ngFor="let channel of category.channels" class="channel-item">
-      <div (click)="selectChannel(category.id,channel.id)" class="channel-item">
+      <div (click)="selectChannel(category._id,channel._id)" class="channel-item">
         {{ channel.channelName }}
       </div>
       <span class="category-settings-icon" (click)="toggleCategoryDropdown(category)">⚙️</span>
