@@ -1,1 +1,45 @@
-<p>update-channel works!</p>
+<div>
+    <h2>Update Text Channel</h2>
+    <form (ngSubmit)="onSubmit()">
+      <!-- Channel Name Input -->
+      <label for="channelName">Channel Name:</label>
+      <input
+        type="text"
+        id="channelName"
+        [(ngModel)]="channelData.name"
+        name="channelName"
+        required
+      />
+  
+      <!-- Roles and Permissions -->
+      <h3>Roles and Permissions</h3>
+      <table>
+        <tr>
+          <th>Role</th>
+          <th>Read</th>
+          <th>Write</th>
+        </tr>
+        <tr *ngFor="let role of channelData.allowedRoles">
+          <td>{{ role.role }}</td>
+          <td>
+            <input
+              type="checkbox"
+              [(ngModel)]="role.read"
+              name="read_{{ role.role }}"
+            />
+          </td>
+          <td>
+            <input
+              type="checkbox"
+              [(ngModel)]="role.write"
+              name="write_{{ role.role }}"
+            />
+          </td>
+        </tr>
+      </table>
+  
+      <!-- Submit Button -->
+      <button type="submit">Update Channel</button>
+    </form>
+  </div>
+  

@@ -12,6 +12,7 @@ import { ListChannelComponent } from './channel/list-channel/list-channel.compon
 import { UpdateServerComponent } from './update-server/update-server.component';
 import { UpdateCategoryComponent } from './category/update-category/update-category.component';
 import { CreateChannelComponent } from './channel/create-channel/create-channel.component';
+import { UpdateChannelComponent } from './channel/update-channel/update-channel.component';
 // import { DefaultViewComponent } from './default-view/default-view.component';
 
 const routes: Routes = [
@@ -33,8 +34,12 @@ const routes: Routes = [
         component: UpdateCategoryComponent // Route for category settings
       },
       {
+        path: 'categories/:categoryId/textChannels/:textChannelId/settings',
+        component: UpdateChannelComponent // Route for channel settings
+      },
+      {
         path: 'updateServer',
-        component: UpdateServerComponent
+        component: UpdateServerComponent // Route for updating server details
       },
       {
         path: 'categories/:categoryId/textChannels/create-channel',

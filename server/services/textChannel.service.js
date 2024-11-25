@@ -34,23 +34,20 @@ const createTextChannel = async (req, res) => {
 // Get details of a specific text channel
 const getTextChannelDetails = async (req, res) => {
   try {
-    const { serverId, categoryId, channelId } = req.params;
-    const channel = await TextChannel.findOne({ _id: channelId, category: categoryId });
-    if (!channel) {
-      return res.status(404).json({ message: 'Channel not found' });
+    const { textChannelId } = req.params;
+    const textChannel = await TextChannel.findById(textChannelId);
+
+    if (!textChannel) {
+      return res.status(404).json({ message: 'Text Channel not found' });
     }
 
-    const category = await Category.findById(categoryId);
-    if (!category || category.server.toString() !== serverId) {
-      return res.status(404).json({ message: 'Category not found or does not belong to the specified server' });
-    }
-
-    res.status(200).json(channel);
+    res.status(200).json(textChannel);
   } catch (error) {
-    console.error('Error getting text channel details:', error);
+    console.error('Error fetching text channel details:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 // Get all text channels within a category
 const getAllTextChannels = async (req, res) => {
@@ -99,15 +96,15 @@ const getAllMessagesInTextChannel = async (req, res) => {
 
 const updateTextChannel = async (req, res) => {
   try {
-    const { serverId, categoryId, channelId } = req.params;
-    const category = await Category.findById(categoryId);
-    if (!category || category.server.toString() !== serverId) {
-      return res.status(404).json({ message: 'Category not found or does not belong to the specified server' });
-    }
+    const { textChannelId } = req.params;
+    const updatedChannel = await TextChannel.findByIdAndUpdate(
+      textChannelId,
+      req.body,
+      { new: true }
+    );
 
-    const updatedChannel = await TextChannel.findByIdAndUpdate(channelId, req.body, { new: true });
     if (!updatedChannel) {
-      return res.status(404).json({ message: 'Channel not found' });
+      return res.status(404).json({ message: 'Text Channel not found' });
     }
 
     res.status(200).json(updatedChannel);
@@ -117,26 +114,24 @@ const updateTextChannel = async (req, res) => {
   }
 };
 
+
 // Delete a text channel
 const deleteTextChannel = async (req, res) => {
   try {
-    const { serverId, categoryId, channelId } = req.params;
-    const category = await Category.findById(categoryId);
-    if (!category || category.server.toString() !== serverId) {
-      return res.status(404).json({ message: 'Category not found or does not belong to the specified server' });
+    const { textChannelId } = req.params;
+
+    const textChannel = await TextChannel.findByIdAndDelete(textChannelId);
+    if (!textChannel) {
+      return res.status(404).json({ message: 'Text Channel not found' });
     }
 
-    const deletedChannel = await TextChannel.findByIdAndDelete(channelId);
-    if (!deletedChannel) {
-      return res.status(404).json({ message: 'Channel not found' });
-    }
-
-    res.status(200).json({ message: 'Channel deleted successfully' });
+    res.status(200).json({ message: 'Text Channel deleted successfully' });
   } catch (error) {
     console.error('Error deleting text channel:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 const addMessageToTextChannel = async ({ params, body, user }) => {
   try {
@@ -208,23 +203,24 @@ const updateMessageInTextChannel = async (req, res) => {
 // Delete a message from a text channel
 const deleteMessageFromTextChannel = async (req, res) => {
   try {
-    const { channelId, messageId } = req.params;
+    const { textChannelId, messageId } = req.params;
 
     // Find the text channel
-    const textChannel = await TextChannel.findById(channelId);
+    const textChannel = await TextChannel.findById(textChannelId);
     if (!textChannel) {
       return res.status(404).json({ message: 'Text Channel not found' });
     }
 
-    // Find and remove the specific message
+    // Find the index of the message in the messages array
     const messageIndex = textChannel.messages.findIndex(
       (message) => message._id.toString() === messageId
     );
+
     if (messageIndex === -1) {
       return res.status(404).json({ message: 'Message not found' });
     }
 
-    // Remove the message by index
+    // Remove the message from the array
     textChannel.messages.splice(messageIndex, 1);
 
     // Save the updated text channel
@@ -236,6 +232,7 @@ const deleteMessageFromTextChannel = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 
 module.exports = {

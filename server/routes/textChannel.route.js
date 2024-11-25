@@ -19,7 +19,7 @@ router.post('/create/:categoryId', createTextChannel);
 router.get('/:categoryId', getAllTextChannels);
 
 // Get details of a specific text channel
-router.get('/:categoryId/:textChannelId', getTextChannelDetails);
+router.get('/details/:textChannelId', getTextChannelDetails);
 
 // Get all messages in a specific text channel
 router.get('/:categoryId/:textChannelId/messages', getAllMessagesInTextChannel);
@@ -31,10 +31,11 @@ router.post('/:categoryId/:textChannelId/messages', addMessageToTextChannel);
 router.put('/:categoryId/:textChannelId/messages/:messagesId', updateMessageInTextChannel);
 
 // Delete a specific message from a text channel
-router.delete('/:categoryId/:textChannelId/messages/:messagesId', deleteMessageFromTextChannel);
+router.delete('/:textChannelId/messages/:messageId', deleteMessageFromTextChannel);
 
 // Update details of a specific text channel
-router.put('/:categoryId/:textChannelId', updateTextChannel);
+router.put('/:textChannelId', updateTextChannel);
+
 
 // Delete a specific text channel
 router.delete('/:categoryId/:textChannelId', deleteTextChannel);

@@ -81,15 +81,14 @@ export class ShowChannelComponent implements OnInit, OnDestroy {
   }
 
   deleteMessage(messageId: string): void {
-    const categoryId = this.route.snapshot.paramMap.get('categoryId');
     const textChannelId = this.textChannelId;
   
-    if (!categoryId || !textChannelId || !messageId) {
-      console.error('Missing categoryId, textChannelId, or messageId');
+    if (!textChannelId || !messageId) {
+      console.error('Missing textChannelId or messageId');
       return;
     }
   
-    this.textChannelService.deleteMessage(categoryId, textChannelId, messageId).subscribe(
+    this.textChannelService.deleteMessage(textChannelId, messageId).subscribe(
       () => {
         console.log('Message deleted successfully');
         this.messages = this.messages.filter((message) => message._id !== messageId);
@@ -99,6 +98,7 @@ export class ShowChannelComponent implements OnInit, OnDestroy {
       }
     );
   }
+  
   
 
 

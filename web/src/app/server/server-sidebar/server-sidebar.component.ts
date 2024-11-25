@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ServerService } from '../../services/server.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../../services/category.service';
@@ -66,8 +66,25 @@ export class ServerSidebarComponent implements OnInit {
   toggleDropdown(): void {
     this.showDropdown = !this.showDropdown;
   }
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+  
+    // Close the server dropdown if the click is outside
+    if (!target.closest('.settings-container')) {
+      this.showDropdown = false;
+    }
+  
+    // Close all category and channel dropdowns if the click is outside
+    this.categories.forEach((category) => {
+      category.showSettingsDropdown = false;
+      category.channels.forEach((channel: any) => {
+        channel.showSettingsDropdown = false;
+      });
+    });
+  }
 
   createCategory(): void {
+    this.showDropdown = false; 
     if (this.serverId) {
       this.router.navigate(['/server', this.serverId, 'categories', 'create']);
     } else {
@@ -76,6 +93,7 @@ export class ServerSidebarComponent implements OnInit {
   }
 
   openServerSettings(): void {
+    this.showDropdown = false; 
     if (this.serverId) {
       this.router.navigate(['/server', this.serverId, 'updateServer']);
     } else {
@@ -106,7 +124,7 @@ export class ServerSidebarComponent implements OnInit {
 
   openCategorySettings(category: any): void {
     console.log(`Open settings for Category: ${category.name}`);
-    this.router.navigate(['/server', this.serverId, 'categories', 'create']);
+    // this.router.navigate(['/server', this.serverId, 'categories', 'create']);
     this.router.navigate(['/server',this.serverId,'categories',category._id,'settings']);
     // Logic for opening settings/details for the specified category
   }
@@ -115,6 +133,7 @@ export class ServerSidebarComponent implements OnInit {
       this.categoryService.deleteCategory(category._id, () => {
         this.loadServerDetails(); // Refresh the categories list
       });
+      category.showSettingsDropdown = false;
     }
   }
 
@@ -137,13 +156,37 @@ export class ServerSidebarComponent implements OnInit {
     this.router.navigate([`server/${this.serverId}/categories/${categoryId}/textChannels/${textChannelId}`]);
   }
 
-  openChannelSettings(channel: any): void {
-    console.log(`Open settings for Channel: ${channel.name}`);
-    // Logic for opening settings/details for the specified channel
-  }
-
   navigateHome(): void {
     console.log('Navigating to Home');
-    // Logic for navigating back to the home page or dashboard
+    this.router.navigate(['/home']);
+  }
+  toggleChannelDropdown(channel: any): void {
+    // Close other channel dropdowns
+    this.categories.forEach((category) => {
+      category.channels.forEach((ch: any) => {
+        if (ch !== channel) {
+          ch.showSettingsDropdown = false;
+        }
+      });
+    });
+  
+    // Toggle the selected channel's dropdown
+    channel.showSettingsDropdown = !channel.showSettingsDropdown;
+  }
+  openChannelSettings(channel: any, categoryId: string, textChannelId: string): void {
+    channel.showSettingsDropdown = false; // Close dropdown
+    this.router.navigate([
+      `/server/${this.serverId}/categories/${categoryId}/textChannels/${textChannelId}/settings`
+    ]);
+  }
+
+  
+  deleteChannel(channel: any): void {
+    if (confirm(`Are you sure you want to delete the channel "${channel.channelName}"?`)) {
+      this.textChannelService.deleteChannel(channel._id, () => {
+        this.loadServerDetails(); // Refresh the categories and channels
+      });
+      channel.showSettingsDropdown = false; // Close dropdown
+    }
   }
 }

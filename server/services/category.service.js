@@ -52,8 +52,8 @@ const getCategories = async (req, res) => {
 
 const getCategoryByID = async (req, res) => {
   try {
-    const categoryId = req.params.categoryId;
-    const category = await Category.findById(categoryId).populate('channels');
+    const { categoryId } = req.params;
+    const category = await Category.findById(categoryId);
     if (!category) {
       return res.status(404).json({ message: 'Category not found' });
     }
@@ -64,28 +64,63 @@ const getCategoryByID = async (req, res) => {
   }
 };
 
+// const getCategoryByID = async (req, res) => {
+//   try {
+//     const categoryId = req.params.categoryId;
+//     const category = await Category.findById(categoryId).populate('channels');
+//     if (!category) {
+//       return res.status(404).json({ message: 'Category not found' });
+//     }
+//     res.status(200).json(category);
+//   } catch (error) {
+//     console.error('Error fetching category:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
+
 // Update category
 const updateCategory = async (req, res) => {
   try {
-    const categoryId = req.params.categoryId;
-    const updatedData = req.body;
+    const { categoryId } = req.params;
+    const { name, allowedRoles } = req.body;
 
-    const updatedCategory = await Category.findByIdAndUpdate(
-      categoryId,
-      updatedData,
-      { new: true } // Return the updated document
-    );
-
-    if (!updatedCategory) {
+    const category = await Category.findById(categoryId);
+    if (!category) {
       return res.status(404).json({ message: 'Category not found' });
     }
 
-    res.status(200).json(updatedCategory);
+    category.name = name;
+    category.allowedRoles = allowedRoles;
+    await category.save();
+
+    res.status(200).json(category);
   } catch (error) {
     console.error('Error updating category:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+// const updateCategory = async (req, res) => {
+//   try {
+//     const categoryId = req.params.categoryId;
+//     const updatedData = req.body;
+
+//     const updatedCategory = await Category.findByIdAndUpdate(
+//       categoryId,
+//       updatedData,
+//       { new: true } // Return the updated document
+//     );
+
+//     if (!updatedCategory) {
+//       return res.status(404).json({ message: 'Category not found' });
+//     }
+
+//     res.status(200).json(updatedCategory);
+//   } catch (error) {
+//     console.error('Error updating category:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
 
 // Delete category
 const deleteCategory = async (req, res) => {

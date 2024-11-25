@@ -36,6 +36,23 @@ export class TextChannelService {
         },
       });
   }
+  deleteChannel(channelId: string, callback: () => void): void {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    this.http.delete(`${this.baseUrl}/channel/${channelId}`, { headers })
+      .subscribe({
+        next: () => {
+          console.log('Channel deleted successfully');
+          callback();
+        },
+        error: (error) => {
+          console.error('Failed to delete channel:', error);
+          alert('Failed to delete channel. Please try again.');
+        }
+      });
+  }
+  
 
   getMessages(categoryId: string, textChannelId: string): Observable<any[]> {
     const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean token
@@ -53,34 +70,40 @@ export class TextChannelService {
     return this.http.post<any>(url, messageData, { headers });
   }
 
-  deleteMessage(categoryId: string, textChannelId: string, messageId: string): Observable<any> {
+  deleteMessage( textChannelId: string, messageId: string): Observable<any> {
     const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean the token
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     const url = `http://localhost:3500/textChannels/${textChannelId}/messages/${messageId}`;
     return this.http.delete(url, { headers });
   }
-  // deleteMessage(categoryId: string, textChannelId: string, messageId: string) {
-  //   const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean the token
-  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  //   const url = `http://localhost:3500/textChannels/${categoryId}/${textChannelId}/messages/${messageId}`;
-  //   return this.http.delete(url, { headers });
-  // }
 
-  // getMessages(categoryId: string, textChannelId: string): Observable<any[]> {
-  //   const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean token
-  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  //   const url = `${this.baseUrl}/${categoryId}/${textChannelId}/messages`;
+  getChannelById(channelId: string, callback: (data: any) => void): void {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
-  //   return this.http.get<any[]>(url, { headers });
-  // }
+    this.http.get<any>(`http://localhost:3500/textChannels/details/${channelId}`, { headers })
+      .subscribe({
+        next: (data) => callback(data),
+        error: (error) => {
+          console.error('Failed to fetch text channel details:', error);
+          alert('Failed to fetch text channel details. Please try again.');
+        }
+      });
+  }
   
-  // createMessage(categoryId: string, channelId: string, messageData: any): Observable<any> {
-  //   const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean the token
-  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  //   const url = `${this.baseUrl}/${categoryId}/${channelId}/messages`; // Correct URL
-    
-  //   return this.http.post<any>(url, messageData, { headers });
-  // }
-
+  updateChannel(channelId: string, channelData: any, callback: () => void): void {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    this.http.put(`http://localhost:3500/textChannels/${channelId}`, channelData, { headers })
+      .subscribe({
+        next: () => callback(),
+        error: (error) => {
+          console.error('Failed to update text channel:', error);
+          alert('Failed to update text channel. Please try again.');
+        }
+      });
+  }
+  
 
 }

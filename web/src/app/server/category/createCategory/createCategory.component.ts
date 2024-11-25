@@ -38,46 +38,45 @@ export class CreateCategoryComponent implements OnInit {
   loadRoles(): void {
     if (this.serverId) {
       this.serverService.getServerById(this.serverId, (serverData: any) => {
-        const allRoles = serverData.members.map((member: { role: string }) => member.role); // Explicitly type `role` as string
-        const uniqueRoles = [...new Set(allRoles)]; // Remove duplicates
-        this.roles = uniqueRoles.map((role) => ({ role: role as string })); // Cast `role` to string
+        const allRoles = serverData.members.map((member: { role: string }) => member.role);
+        const uniqueRoles = [...new Set(allRoles)];
+        this.roles = uniqueRoles.map((role) => ({ role: role as string }));
+  
+        // Initialize permissions
         this.categoryData.allowedRoles = this.roles.map((role) => ({
           role: role.role,
           read: false,
           write: false,
         }));
-      });
-    }
+      });    }
   }
-
-  // loadRoles(): void {
-  //   if (this.serverId) {
-  //     this.serverService.getServerById(this.serverId, (serverData: any) => {
-  //       this.categoryData.allowedRoles = serverData.members.map((member: any) => ({
-  //         role: member.role,
-  //         read: false,
-  //         write: false
-  //       }));
-  //     });
-  //   }
-  // }
-
+  
   onSubmit(): void {
     if (!this.categoryData.name) {
       alert('Category name is required');
       return;
     }
-
-    if (this.serverId === null) {
-      console.error('Server ID is null');
+  
+    if (!this.serverId) {
+      console.error('Server ID is missing');
       return;
     }
-
-    // Send data to backend
-    this.categoryService.createCategory(this.serverId, {
+  
+    // Construct the allowedRoles payload
+    const payload = {
       name: this.categoryData.name,
-      allowedRoles: this.categoryData.allowedRoles
-    });
+      allowedRoles: this.categoryData.allowedRoles.map((role: { role: string; read?: boolean; write?: boolean }) => ({
+        role: role.role,
+        read: role.read === true,  // Explicitly set true or false
+        write: role.write === true, // Explicitly set true or false
+      })),
+    };
+  
+    // Call the service to create the category
+    this.categoryService.createCategory(this.serverId, payload);
     this.router.navigate(['/server', this.serverId, 'categories']);
   }
+  
+  
+  
 }
