@@ -39,6 +39,7 @@ const setupGroupChatSocket = (io) => {
       console.log(`User ${socket.userId} joined channel: ${channelId}`);
     });
 
+
     socket.on('chat message', async (data) => {
       try {
         const { categoryId, textChannelId, content } = data;
@@ -47,75 +48,29 @@ const setupGroupChatSocket = (io) => {
           throw new Error('Invalid message payload');
         }
     
-        // Save the message to the database and get the complete message object
+        // Save the message to the database
         const newMessage = await textChannelService.addMessageToTextChannel({
           params: { categoryId, textChannelId },
           body: { content },
           user: { id: socket.userId }, // Pass the userId from the socket
         });
     
-        // Broadcast the message to the channel
-        io.to(textChannelId).emit('chat message', newMessage);
+        // Populate the sender information
+        const sender = await User.findById(socket.userId);
+    
+        // Emit the message, ensuring `newMessage` is correctly formatted
+        io.to(textChannelId).emit('chat message', {
+          _id: newMessage._id,
+          content: newMessage.content,
+          senderName: sender.username, // Include senderName
+          createdAt: newMessage.createdAt, // Include timestamp
+        });
         console.log(`Message sent to channel ${textChannelId}:`, newMessage);
       } catch (error) {
         console.error('Error handling chat message:', error.message);
       }
     });
-    // socket.on('chat message', async (data) => {
-    //   try {
-    //     const { categoryId, textChannelId, content } = data;
     
-    //     if (!categoryId || !textChannelId || !content) {
-    //       throw new Error('Invalid message payload');
-    //     }
-    
-    //     // Save the message to the database
-    //     const newMessage = await textChannelService.addMessageToTextChannel({
-    //       params: { categoryId, textChannelId },
-    //       body: { content },
-    //       user: { id: socket.userId }, // Pass the userId from the socket
-    //     });
-    
-    //     // Fetch the sender's name
-    //     const user = await User.findById(socket.userId);
-    //     if (!user) {
-    //       throw new Error('Sender not found');
-    //     }
-    
-    //     const broadcastMessage = {
-    //       ...newMessage.toObject(), // Include all message fields
-    //       senderName: `${user.firstName} ${user.lastName}`, // Add sender's name
-    //     };
-    
-    //     // Broadcast the message to the channel
-    //     io.to(textChannelId).emit('chat message', broadcastMessage);
-    //     console.log(`Message sent to channel ${textChannelId}:`, broadcastMessage);
-    //   } catch (error) {
-    //     console.error('Error handling chat message:', error.message);
-    //   }
-    // });
-    // socket.on('chat message', async (data) => {
-    //   try {
-    //     const { categoryId, textChannelId, content } = data;
-
-    //     if (!categoryId || !textChannelId || !content) {
-    //       throw new Error('Invalid message payload');
-    //     }
-
-    //     // Save the message to the database
-    //     const newMessage = await textChannelService.addMessageToTextChannel({
-    //       params: { categoryId, textChannelId },
-    //       body: { content },
-    //       user: { id: socket.userId }, // Pass the userId from the socket
-    //     });
-
-    //     // Broadcast the message to the channel
-    //     io.to(textChannelId).emit('chat message', newMessage);
-    //     console.log(`Message sent to channel ${textChannelId}:`, newMessage);
-    //   } catch (error) {
-    //     console.error('Error handling chat message:', error.message);
-    //   }
-    // });
 
     socket.on('disconnect', () => {
       console.log(`User ${socket.userId} disconnected`);

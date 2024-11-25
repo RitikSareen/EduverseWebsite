@@ -71,23 +71,26 @@ const getAllTextChannels = async (req, res) => {
 };
 
 // Get all messages in a text channel
+
 const getAllMessagesInTextChannel = async (req, res) => {
   try {
     const { textChannelId } = req.params;
 
-    const textChannel = await TextChannel.findById(textChannelId).populate('messages.sender_id', 'firstName lastName');
+    // Find the text channel and populate messages with sender details
+    const textChannel = await TextChannel.findById(textChannelId).populate('messages.sender_id', 'username');
     if (!textChannel) {
       return res.status(404).json({ message: 'Text Channel not found' });
     }
 
-    const messagesWithSenderNames = textChannel.messages.map((message) => ({
+    // Transform the messages to include sender name and timestamp
+    const messagesWithDetails = textChannel.messages.map((message) => ({
       _id: message._id,
       content: message.content,
-      senderName: `${message.sender_id.firstName} ${message.sender_id.lastName}`,
-      createdAt: message.createdAt, // Use createdAt directly from Mongoose
+      senderName: message.sender_id.username || 'Unknown', // Get username
+      createdAt: message.createdAt, // Include timestamp
     }));
 
-    res.json(messagesWithSenderNames);
+    res.json(messagesWithDetails);
   } catch (error) {
     console.error('Error fetching messages:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -150,26 +153,23 @@ const addMessageToTextChannel = async ({ params, body, user }) => {
       throw new Error('Text Channel not found');
     }
 
-    // Create the new message
+    // Create the new message object
     const newMessage = {
       sender_id: user.id, // Ensure sender_id is properly set
       content,
-      timestamp: new Date(),
+      createdAt: new Date(), // Add timestamp
     };
 
-    // Add the new message to the text channel
+    // Save the message to the text channel
     textChannel.messages.push(newMessage);
     await textChannel.save();
 
-    // Fetch the sender's name
-    const sender = await User.findById(user.id, 'firstName lastName');
-    if (!sender) {
-      throw new Error('Sender not found');
-    }
-
+    // Return the saved message (plain object with relevant fields)
     return {
-      ...newMessage, // Include the original message fields
-      senderName: `${sender.firstName} ${sender.lastName}`, // Add sender's name
+      _id: textChannel.messages[textChannel.messages.length - 1]._id, // Get last inserted message ID
+      content: newMessage.content,
+      sender_id: newMessage.sender_id,
+      createdAt: newMessage.createdAt,
     };
   } catch (error) {
     console.error('Error adding message to text channel:', error);
@@ -177,39 +177,6 @@ const addMessageToTextChannel = async ({ params, body, user }) => {
   }
 };
 
-
-
-// const addMessageToTextChannel = async ({ params, body, user }) => {
-//   try {
-//     const { categoryId, textChannelId } = params;
-//     const { content } = body;
-
-//     if (!categoryId || !textChannelId || !content) {
-//       throw new Error('Missing required fields');
-//     }
-
-//     // Find the text channel
-//     const textChannel = await TextChannel.findById(textChannelId);
-//     if (!textChannel) {
-//       throw new Error('Text Channel not found');
-//     }
-
-//     const newMessage = {
-//       sender_id: user.id, // Ensure sender_id is properly set
-//       content,
-//       timestamp: new Date(),
-//     };
-
-//     // Save the message to the text channel
-//     textChannel.messages.push(newMessage);
-//     await textChannel.save();
-
-//     return newMessage;
-//   } catch (error) {
-//     console.error('Error adding message to text channel:', error);
-//     throw error;
-//   }
-// };
 
 const updateMessageInTextChannel = async (req, res) => {
   try {
@@ -243,24 +210,33 @@ const deleteMessageFromTextChannel = async (req, res) => {
   try {
     const { channelId, messageId } = req.params;
 
+    // Find the text channel
     const textChannel = await TextChannel.findById(channelId);
     if (!textChannel) {
       return res.status(404).json({ message: 'Text Channel not found' });
     }
 
-    const message = textChannel.messages.id(messageId);
-    if (!message) {
+    // Find and remove the specific message
+    const messageIndex = textChannel.messages.findIndex(
+      (message) => message._id.toString() === messageId
+    );
+    if (messageIndex === -1) {
       return res.status(404).json({ message: 'Message not found' });
     }
 
-    message.remove();
+    // Remove the message by index
+    textChannel.messages.splice(messageIndex, 1);
+
+    // Save the updated text channel
     await textChannel.save();
+
     res.status(200).json({ message: 'Message deleted successfully' });
   } catch (error) {
     console.error('Error deleting message from text channel:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 module.exports = {
   createTextChannel,

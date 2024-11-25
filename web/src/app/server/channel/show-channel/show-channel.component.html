@@ -1,7 +1,7 @@
 <div class="message-container">
   <!-- Messages Section -->
   <div class="messages">
-    <div *ngFor="let message of messages" class="message">
+    <div *ngFor="let message of messages; let i = index" class="message">
       <div class="message-metadata">
         <!-- Sender Name -->
         <span class="sender-name">{{ message.senderName }}</span>
@@ -11,6 +11,19 @@
       <!-- Message Content -->
       <div class="message-content">
         {{ message.content }}
+        <!-- Dropdown Icon -->
+        <div class="message-options">
+          <span (click)="toggleDropdown(i)" class="options-icon">...</span>
+          <div
+            *ngIf="activeDropdownIndex === i"
+            class="dropdown"
+            (clickOutside)="closeDropdown()"
+          >
+            <ul>
+              <li (click)="deleteMessage(message._id)">Delete Message</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>

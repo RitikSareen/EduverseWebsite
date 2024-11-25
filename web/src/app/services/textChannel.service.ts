@@ -53,6 +53,19 @@ export class TextChannelService {
     return this.http.post<any>(url, messageData, { headers });
   }
 
+  deleteMessage(categoryId: string, textChannelId: string, messageId: string): Observable<any> {
+    const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean the token
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const url = `http://localhost:3500/textChannels/${textChannelId}/messages/${messageId}`;
+    return this.http.delete(url, { headers });
+  }
+  // deleteMessage(categoryId: string, textChannelId: string, messageId: string) {
+  //   const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean the token
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   const url = `http://localhost:3500/textChannels/${categoryId}/${textChannelId}/messages/${messageId}`;
+  //   return this.http.delete(url, { headers });
+  // }
+
   // getMessages(categoryId: string, textChannelId: string): Observable<any[]> {
   //   const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean token
   //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class AuthService {
   getUser() {
     let user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
+  }
+  getUserDetails(userId: string): Observable<any> {
+    const url = `${this.baseURL}/${userId}`; // Adjusted endpoint for user details
+    return this.http.get<any>(url);
   }
 
   getToken() {
