@@ -19,9 +19,30 @@ export class AuthService {
   }
 
   getUser() {
-    let user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    console.log('AuthService.getUser() output:', user); // Debugging output
+    return user;
+    // let user = localStorage.getItem('user');
+    // return user ? JSON.parse(user) : null;
   }
+  getCurrentUser(): any {
+    const user = localStorage.getItem('user');
+  if (!user) {
+    console.error('No user found in localStorage. Please log in again.');
+    return null; // Ensure it gracefully returns null
+  }
+  
+  try {
+    const parsedUser = JSON.parse(user);
+    console.log('AuthService.getUser() output:', parsedUser);
+    return parsedUser;
+  } catch (error) {
+    console.error('Failed to parse user from localStorage:', error);
+    return null;
+  }
+  }
+
+
   getUserDetails(userId: string): Observable<any> {
     const url = `${this.baseURL}/${userId}`; // Adjusted endpoint for user details
     return this.http.get<any>(url);

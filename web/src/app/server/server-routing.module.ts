@@ -46,6 +46,7 @@ const routes: Routes = [
         component: CreateChannelComponent
       },
       { path: 'categories/:categoryId/textChannels/:textChannelId', component: ShowChannelComponent },
+      { path: '**', redirectTo: ''} // Default route
     ]
   }
 ];

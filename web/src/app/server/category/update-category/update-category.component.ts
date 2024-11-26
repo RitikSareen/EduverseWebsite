@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServerService } from '../../../services/server.service';
 import { CategoryService } from '../../../services/category.service';
+import { SidebarRefreshService } from '../../../services/sidebar-refresh.service';
 
 @Component({
   selector: 'app-update-category',
@@ -21,7 +22,8 @@ export class UpdateCategoryComponent implements OnInit {
     private route: ActivatedRoute,
     private serverService: ServerService,
     private categoryService: CategoryService,
-    private router: Router
+    private router: Router,
+    private sidebarRefreshService: SidebarRefreshService
   ) {}
 
   ngOnInit(): void {
@@ -118,6 +120,8 @@ export class UpdateCategoryComponent implements OnInit {
       alert('Category updated successfully!');
       
     });
+    this.sidebarRefreshService.triggerSidebarRefresh();
+    this.router.navigate(['/server', this.serverId]);
     // this.router.navigate(['/server', this.serverId,'categories']);
   }
 }

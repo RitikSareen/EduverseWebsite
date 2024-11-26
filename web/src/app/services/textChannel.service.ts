@@ -92,17 +92,19 @@ export class TextChannelService {
   }
   
   updateChannel(channelId: string, channelData: any, callback: () => void): void {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const token = this.authService.getToken();// Retrieve the token if required
+    const headers = { Authorization: `Bearer ${token}` }; // Optional authentication headers
   
-    this.http.put(`http://localhost:3500/textChannels/${channelId}`, channelData, { headers })
-      .subscribe({
-        next: () => callback(),
-        error: (error) => {
-          console.error('Failed to update text channel:', error);
-          alert('Failed to update text channel. Please try again.');
-        }
-      });
+    this.http.put(`http://localhost:3500/textChannels/${channelId}`, channelData, { headers }).subscribe({
+      next: () => {
+        console.log('Channel updated successfully.');
+        callback();
+      },
+      error: (error) => {
+        console.error('Failed to update channel:', error);
+        alert('Failed to update channel. Please try again.');
+      },
+    });
   }
   
 

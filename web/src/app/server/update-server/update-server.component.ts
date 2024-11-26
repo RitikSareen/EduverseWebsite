@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServerService } from '../../services/server.service';
+import { SidebarRefreshService } from '../../services/sidebar-refresh.service';
 
 @Component({
   selector: 'app-update-server',
@@ -25,7 +26,8 @@ export class UpdateServerComponent implements OnInit {
   constructor(
     private serverService: ServerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private sidebarRefreshService: SidebarRefreshService
   ) {}
 
   ngOnInit(): void {
@@ -65,7 +67,9 @@ export class UpdateServerComponent implements OnInit {
       console.log('Server updated successfully');
       this.loadServerDetails(this.serverId);
       // window.location.reload();
+      this.sidebarRefreshService.triggerSidebarRefresh();
       this.router.navigate(['/server', this.serverId]);
+      // this.router.navigate(['/server', this.serverId]);
     }
   }
 

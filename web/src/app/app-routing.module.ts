@@ -24,12 +24,12 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/auth/show',
+    redirectTo: '/auth/landingPage',
     pathMatch: 'full'
   },
   {
     path: '**',
-    redirectTo: '/auth/show'
+    redirectTo: '/auth/landingPage'
   }
 ];
 

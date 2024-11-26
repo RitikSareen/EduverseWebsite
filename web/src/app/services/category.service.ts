@@ -38,6 +38,8 @@ export class CategoryService {
       });
   }
 
+ 
+
   // Get all categories for a specific server
   getCategoriesByServerId(serverId: string, callback: (data: any[]) => void): void {
     const token = this.authService.getToken();

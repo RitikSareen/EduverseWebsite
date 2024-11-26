@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../../../services/category.service';
 import { ServerService } from '../../../services/server.service';
+import { SidebarRefreshService } from '../../../services/sidebar-refresh.service';
 
 @Component({
   selector: 'app-create-category',
@@ -21,7 +22,8 @@ export class CreateCategoryComponent implements OnInit {
     private categoryService: CategoryService,
     private serverService: ServerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private sidebarRefreshService: SidebarRefreshService
   ) {}
   // const id = this.route.parent?.snapshot.paramMap.get('serverId');
   //   this.serverId = id ? id : null;
@@ -74,6 +76,7 @@ export class CreateCategoryComponent implements OnInit {
   
     // Call the service to create the category
     this.categoryService.createCategory(this.serverId, payload);
+    this.sidebarRefreshService.triggerSidebarRefresh();
     this.router.navigate(['/server', this.serverId, 'categories']);
   }
   

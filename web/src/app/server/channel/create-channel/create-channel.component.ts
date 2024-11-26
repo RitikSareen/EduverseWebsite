@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ServerService } from '../../../services/server.service';
 import { GroupChatService } from '../../../services/groupChat.service';
 import { TextChannelService } from '../../../services/textChannel.service';
+import { SidebarRefreshService } from '../../../services/sidebar-refresh.service';
 
 @Component({
   selector: 'app-create-channel',
@@ -22,7 +23,8 @@ export class CreateChannelComponent implements OnInit {
     private serverService: ServerService,
     private route: ActivatedRoute,
     private router: Router,
-    private textChannelService: TextChannelService
+    private textChannelService: TextChannelService,
+    private sidebarRefreshService: SidebarRefreshService
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +108,7 @@ export class CreateChannelComponent implements OnInit {
         alert('Failed to create text channel. Please try again.');
       }
     );
+    this.sidebarRefreshService.triggerSidebarRefresh();
     this.router.navigate(['/server', this.serverId, 'categories']);
   }
   

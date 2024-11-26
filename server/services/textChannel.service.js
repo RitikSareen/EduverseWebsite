@@ -97,20 +97,26 @@ const getAllMessagesInTextChannel = async (req, res) => {
 const updateTextChannel = async (req, res) => {
   try {
     const { textChannelId } = req.params;
+    const { channelName, allowedRoles } = req.body;
+
+    if (!channelName || !channelName.trim()) {
+      return res.status(400).json({ message: 'Channel name is required.' });
+    }
+
     const updatedChannel = await TextChannel.findByIdAndUpdate(
       textChannelId,
-      req.body,
+      { channelName, allowedRoles },
       { new: true }
     );
 
     if (!updatedChannel) {
-      return res.status(404).json({ message: 'Text Channel not found' });
+      return res.status(404).json({ message: 'Channel not found.' });
     }
 
     res.status(200).json(updatedChannel);
   } catch (error) {
     console.error('Error updating text channel:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error.' });
   }
 };
 
