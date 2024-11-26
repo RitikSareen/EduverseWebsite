@@ -99,6 +99,11 @@ export class ShowChannelComponent implements OnInit, OnDestroy {
     );
   }
   
+  onEnter(event: KeyboardEvent): void {
+    event.preventDefault(); // Prevent default Enter key behavior (adding a new line)
+    this.sendMessage();
+  }
+  
   
 
 

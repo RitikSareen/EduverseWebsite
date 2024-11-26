@@ -5,8 +5,9 @@
     <div class="settings-container">
       <span class="settings-icon" (click)="toggleDropdown()">⚙️</span>
       <div class="dropdown-menu" *ngIf="showDropdown">
-        <div class="dropdown-item" (click)="createCategory()">Create New Category</div>
-        <div class="dropdown-item" (click)="openServerSettings()">Server Settings</div>
+        <!-- Show only if the user has required roles -->
+        <div class="dropdown-item" *ngIf="hasAdminPrivileges" (click)="createCategory()">Create New Category</div>
+        <div class="dropdown-item" *ngIf="hasAdminPrivileges" (click)="openServerSettings()">Server Settings</div>
         <div class="dropdown-item leave" (click)="leaveServer()">Leave Server</div>
       </div>
     </div>
@@ -17,9 +18,14 @@
     <!-- Category Header -->
     <div class="category-header">
       <span class="category-name">{{ category.name }}</span>
-      <span class="add-icon" (click)="navigateToCreateChannel(category)">+</span>
+      <span class="add-icon" *ngIf="hasAdminPrivileges" (click)="navigateToCreateChannel(category)">+</span>
       <div class="category-settings-container">
-        <span class="category-settings-icon" (click)="toggleCategoryDropdown(category)">⚙️</span>
+        <span
+          class="category-settings-icon"
+          
+          (click)="toggleCategoryDropdown(category)"
+          >⚙️</span
+        >
         <div class="dropdown-menu" *ngIf="category.showSettingsDropdown">
           <div class="dropdown-item" (click)="openCategorySettings(category)">Category Settings</div>
           <div class="dropdown-item delete" (click)="deleteCategory(category)">Delete Category</div>
@@ -28,17 +34,26 @@
     </div>
 
     <!-- List of Channels under Category -->
-    <!-- List of Channels under Category -->
-<div *ngFor="let channel of category.channels" class="channel-item">
-  <div (click)="selectChannel(category._id, channel._id)" class="channel-item">
-    #{{ channel.channelName }}
-  </div>
-  <div class="channel-settings-container">
-    <span class="channel-settings-icon" (click)="toggleChannelDropdown(channel)">⚙️</span>
-    <div class="dropdown-menu" *ngIf="channel.showSettingsDropdown">
-      <div class="dropdown-item" (click)="openChannelSettings(channel,category._id,channel._id)">Update Channel</div>
-      <div class="dropdown-item delete" (click)="deleteChannel(channel)">Delete Channel</div>
+    <div *ngFor="let channel of category.channels" class="channel-item">
+      <div (click)="selectChannel(category._id, channel._id)" class="channel-item">
+        #{{ channel.channelName }}
+      </div>
+      <div class="channel-settings-container">
+        <span
+          class="channel-settings-icon"
+          
+          (click)="toggleChannelDropdown(channel)"
+          >⚙️</span
+        >
+        <div class="dropdown-menu" *ngIf="channel.showSettingsDropdown">
+          <div class="dropdown-item" (click)="openChannelSettings(channel, category._id, channel._id)">Update Channel</div>
+          <div class="dropdown-item delete" (click)="deleteChannel(channel)">Delete Channel</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<div>
+  <button class="home-button" (click)="navigateHome()">Home</button>
 </div>
