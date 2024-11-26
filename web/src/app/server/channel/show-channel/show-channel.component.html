@@ -1,14 +1,15 @@
 <div class="message-container">
+  <!-- Channel Name Section -->
+  <div class="channel-header">
+    <h2 class="channel-name"># &#160; {{ channelName }}</h2>
+  </div>
+
   <!-- Messages Section -->
   <div class="messages">
     <div *ngFor="let message of messages; let i = index" class="message">
       <div class="message-metadata">
         <span class="sender-name">{{ message.senderName }}</span>
         <span class="timestamp">{{ message.createdAt | date: 'short' }}</span>
-      </div>
-      <div class="message-content">
-        {{ message.content }}
-        <!-- Delete option only if user has write permissions -->
         <div class="message-options" *ngIf="hasWritePermission">
           <span (click)="toggleDropdown(i)" class="options-icon">...</span>
           <div
@@ -22,18 +23,29 @@
           </div>
         </div>
       </div>
+      <div class="message-content">
+        {{ message.content }}
+        <!-- Delete option only if user has write permissions -->
+        
+      </div>
     </div>
   </div>
 
   <!-- Input Section -->
-  <!-- Show input only if user has write permissions -->
-  <div *ngIf="hasWritePermission" class="message-input">
+  <div class="message-input">
     <textarea
       [(ngModel)]="newMessage"
-      placeholder="Type your message..."
+      [placeholder]="hasWritePermission ? 'Type your message...' : 'You have no permission to send messages in this channel'"
       class="message-textarea"
       rows="1"
+      [disabled]="!hasWritePermission"
     ></textarea>
-    <button (click)="sendMessage()" class="send-button">Send</button>
+    <button
+      (click)="sendMessage()"
+      class="send-button"
+      [disabled]="!hasWritePermission"
+    >
+      Send
+    </button>
   </div>
 </div>

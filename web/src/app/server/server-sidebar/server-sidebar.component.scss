@@ -1,28 +1,27 @@
 .server-sidebar {
-  width:200px;
+  width: 200px;
   background-color: #1b1b1b;
   color: #e0e0e0;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 10px 15px; /* Reduced padding */
+  padding: 10px 15px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   position: fixed;
   top: 0;
   left: 0;
   overflow-y: auto;
-  // background-color: #1e1e1e;
-  // color: white;
-  // width: 250px;
-  // padding: 20px;
 }
 
 .server-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #333;
+  font-family: Arial;
+  font-size: 20px;
 }
 
 .settings-container {
@@ -43,12 +42,14 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 10;
   width: 150px;
+  
 }
 
 .dropdown-item {
   color: rgb(255, 255, 255);
   padding: 8px;
   cursor: pointer;
+  font-family: Arial;
   &:hover {
     background-color: #444;
   }
@@ -62,54 +63,34 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: Arial;
   font-weight: bold;
   color: #aaa;
+  padding: 10px;
 }
 
 .channel-item {
   display: flex;
+  font-family: Arial;
   align-items: center;
   padding-left: 10px;
+  padding-top: 3px;
+  padding-top: 3px;
   color: #ccc;
 }
 
-.add-icon, .category-settings-icon, .channel-settings-icon {
-  margin-left: 8px;
+.add-icon,
+.category-settings-icon,
+.channel-settings-icon {
+  margin-right: 0px;
   cursor: pointer;
   color: #888;
 }
+
 .category-settings-container {
   position: relative;
   display: inline-block;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 20px;
-  right: 0;
-  background-color: rgb(36, 33, 33);
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-}
-
-.dropdown-item {
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.dropdown-item:hover {
-  background-color: #f0f0f0;
-}
-
-.dropdown-item.delete {
-  color: red;
-}
-
-.dropdown-item.delete:hover {
-  background-color: #ffe5e5;
+  
 }
 
 .home-button {
@@ -122,11 +103,10 @@
   cursor: pointer;
   width: 100%;
   margin-top: auto;
-  margin-bottom: 50px; /* Pulls the button slightly up */
+  margin-bottom: 50px;
   transition: background-color 0.3s;
 }
 
 .home-button:hover {
   background-color: darkgreen;
 }
-

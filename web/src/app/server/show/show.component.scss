@@ -1,20 +1,41 @@
-.show-container {
-  display: flex;
-  height: 100vh; /* Full viewport height */
-}
-
-//   .sidebar-section {
-//   width: 250px; /* Fixed width for sidebar */
-//   background-color: #1e1e1e; /* Dark sidebar background */
-//   color: white;
-//   overflow-y: auto;
+// .show-container {
+//   display: flex;
+//   height: 100vh; /* Full viewport height */
 // }
 
-  .main-content {
-    margin-left: 230px; /* Adjusted to match sidebar width */
-    padding: 20px;
-    width: calc(100% - 300px); /* Full width minus sidebar width */
-    overflow-y: auto; /* Scrollable if content overflows */
-    background-color: #ffffff; /* Light background for contrast */
-    color: #333; /* Dark text color */
-  }
+//   .main-content {
+//     margin-left: 220px; /* Adjusted to match sidebar width */
+//     // padding: 20px;
+//     width: calc(100% - 300px); /* Full width minus sidebar width */
+//     overflow-y: auto; /* Scrollable if content overflows */
+//     background-color: #ffffff; /* Light background for contrast */
+//     color: #333; /* Dark text color */
+//   }
+
+.show-container {
+  display: flex;
+  height: 100%; /* Full viewport height */
+  
+}
+
+.main-content {
+  margin-left: 200px; /* Matches sidebar width */
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 0;
+  // width: calc(100% - 200px); /* Occupies remaining width */
+  background-color: #36393f; /* Matches the background of the text channel */
+  display: flex;
+  flex-direction: column;
+  // overflow: hidden; /* Prevents unnecessary scrollbars */
+  flex: 1; /* Take the remaining space after the sidebar */
+  // overflow: hidden; /* Prevent scrolling on the main content */
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}

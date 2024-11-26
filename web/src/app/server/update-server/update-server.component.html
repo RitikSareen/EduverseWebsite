@@ -16,25 +16,7 @@
   <button (click)="updateServer()">Save Changes</button>
 
   <!-- Roles Table -->
-  <div class="roles-table">
-    <h3>Server Roles</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Role Name</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let role of uniqueRoles">
-          <td>{{ role }}</td>
-          <td>
-            <button (click)="removeRole(role)">Remove</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  
 
   <!-- Members Table -->
   <div class="members-table">
