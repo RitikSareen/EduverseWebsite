@@ -1,17 +1,36 @@
 .server-sidebar {
-  width: 200px;
+  width: 230px;
   background-color: #1b1b1b;
   color: #e0e0e0;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 10px 15px;
+  padding: 0; /* Remove top/bottom padding for better layout management */
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   position: fixed;
   top: 0;
   left: 0;
-  overflow-y: auto;
 }
+
+.sidebar-content {
+  flex: 1; /* Ensures this section takes up remaining space */
+  overflow-y: auto; /* Allow scrolling for categories and channels */
+  padding: 10px 15px; /* Adds padding for content */
+}
+// .server-sidebar {
+//   width: 200px;
+//   background-color: #1b1b1b;
+//   color: #e0e0e0;
+//   height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   padding: 10px 15px;
+//   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   overflow-y: auto;
+// }
 
 .server-header {
   display: flex;
@@ -151,6 +170,9 @@
   
 }
 
+.home-button-container {
+  padding: 10px 15px; /* Adds padding for the button container */
+}
 .home-button {
   background-color: green;
   color: #ffffff;
@@ -160,8 +182,6 @@
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
-  margin-top: auto;
-  margin-bottom: 50px;
   transition: background-color 0.3s;
 }
 

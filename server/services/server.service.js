@@ -1,6 +1,8 @@
 // Server Service
 const Server = require('../models/server');
 const User = require('../models/user')
+const TextChannel = require('../models/textChannel');
+const Category = require('../models/category');
 
 // Create a new server
 const createServer = async (req, res) => {
