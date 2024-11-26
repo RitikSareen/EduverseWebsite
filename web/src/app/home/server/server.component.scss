@@ -1,19 +1,73 @@
 .server-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(3, 1fr); /* Display 3 blocks per row */
+  gap: 2rem; /* Add spacing between the blocks */
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr); /* Display 2 blocks per row on medium screens */
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; /* Display 1 block per row on small screens */
+  }
 }
 
 .server-block {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
+  background: linear-gradient(135deg, #e9ecef, #f9f9f9); /* Subtle gradient for the block */
+  border-radius: 10px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Box shadow for depth */
+  padding: 2rem;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+
+  hr{
+    opacity: 0.3;
+  }
+  &:hover {
+    transform: translateY(-8px); /* Lift effect on hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  }
+  h3{
+    font-size: 1.7em;
+  }
+  p {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 1rem; /* Add spacing below the server name */
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #404040; /* Primary blue color */
+    color: white;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #5e5e5e; /* Darker blue on hover */
+    }
+  }
 }
 
-.server-block:hover {
-  transform: scale(1.05);
+.create-server {
+  background-color: #f5f5f5; /* Light background for "Create Server" */
+  border: 2px dashed #404040; /* Dashed border for distinction */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #404040;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: #e7f0fd; /* Light blue background on hover */
+    color: #5e5e5e; /* Darker blue text on hover */
+  }
 }
 
 .modal {
@@ -22,7 +76,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5); /* Dark transparent background */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,26 +84,22 @@
 
 .modal-content {
   background: white;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 2rem;
+  border-radius: 10px;
   text-align: center;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow for the modal */
+  max-width: 500px;
+  width: 100%;
 }
 
 .modal-actions {
   display: flex;
   justify-content: center;
-  gap: 10px;
-}
+  gap: 1rem; /* Space between buttons */
+  margin-top: 1.5rem;
 
-button {
-  padding: 5px 10px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
+  button {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+  }
 }

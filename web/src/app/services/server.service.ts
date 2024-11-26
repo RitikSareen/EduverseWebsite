@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -33,24 +34,29 @@ export class ServerService {
         }
       });
   }
-
-  // Delete a server by ID
-  deleteServer(serverId: string): void {
+  deleteServer(serverId: string): Observable<any> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    this.http.delete(`${this.baseUrl}/delete/${serverId}`, { headers })
-      .subscribe({
-        next: (response: any) => {
-          console.log('Server deleted successfully:', response);
-          this.router.navigate(['/home']);
-        },
-        error: (error) => {
-          console.error('Failed to delete server:', error);
-          alert('Server deletion failed. Please try again.');
-        }
-      });
+    return this.http.delete(`${this.baseUrl}/servers/${serverId}`, { headers });
   }
+
+  // Delete a server by ID
+  // deleteServer(serverId: string): void {
+  //   const token = this.authService.getToken();
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  //   this.http.delete(`${this.baseUrl}/delete/${serverId}`, { headers })
+  //     .subscribe({
+  //       next: (response: any) => {
+  //         console.log('Server deleted successfully:', response);
+  //         this.router.navigate(['/home']);
+  //       },
+  //       error: (error) => {
+  //         console.error('Failed to delete server:', error);
+  //         alert('Server deletion failed. Please try again.');
+  //       }
+  //     });
+  // }
 
   // Join a server by ID
   joinServer(serverId: string, joinCode: string, successCallback: (response: any) => void, errorCallback: (error: any) => void): void {
@@ -83,6 +89,12 @@ export class ServerService {
         }
       });
   }
+  leaveServer(serverId: string): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(`${this.baseUrl}/servers/${serverId}/leave`, { headers });
+  }
+  
 
   // Fetch server details by ID (including categories and channels)
   getServerById(serverId: string, callback: (data: any) => void): void {

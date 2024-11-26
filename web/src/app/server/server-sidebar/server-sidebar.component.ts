@@ -147,9 +147,25 @@ export class ServerSidebarComponent implements OnInit {
   }
 
   leaveServer(): void {
-    console.log('Leave Server clicked.');
-    // Logic for leaving the server
+    if (confirm('Are you sure you want to leave this server?')) {
+      if (this.serverId) {
+        this.serverService.leaveServer(this.serverId).subscribe(
+          (response) => {
+            alert('You have successfully left the server.');
+            this.router.navigate(['/home']); // Redirect to the home page after leaving
+          },
+          (error) => {
+            console.error('Error leaving server:', error);
+            alert('An error occurred while trying to leave the server.');
+          }
+        );
+      } else {
+        console.error('Server ID is null');
+        alert('An error occurred: Server ID is missing.');
+      }
+    }
   }
+  
 
   navigateToCreateChannel(category: any): void {
     if (category && category._id) {

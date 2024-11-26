@@ -4,12 +4,12 @@
     <div class="server-name">{{ serverName }}</div>
     <div class="settings-container">
       <span
-        *ngIf="hasAdminPrivileges"
+        
         class="settings-icon"
         (click)="toggleDropdown()"
         >⚙️</span
       >
-      <div class="dropdown-menu" *ngIf="showDropdown">
+      <div class="dropdown-menu server-settings" *ngIf="showDropdown">
         <div
           *ngIf="hasAdminPrivileges"
           class="dropdown-item"
@@ -49,7 +49,7 @@
           (click)="toggleCategoryDropdown(category)"
           >⚙️</span
         >
-        <div class="dropdown-menu" *ngIf="category.showSettingsDropdown">
+        <div class="dropdown-menu category-setting" *ngIf="category.showSettingsDropdown">
           <div
             class="dropdown-item"
             (click)="openCategorySettings(category)"
@@ -81,7 +81,7 @@
           (click)="toggleChannelDropdown(channel)"
           >⚙️</span
         >
-        <div class="dropdown-menu" *ngIf="channel.showSettingsDropdown">
+        <div class="dropdown-menu channel-setting" *ngIf="channel.showSettingsDropdown">
           <div
             class="dropdown-item"
             (click)="openChannelSettings(channel, category._id, channel._id)"

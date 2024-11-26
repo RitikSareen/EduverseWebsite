@@ -31,18 +31,50 @@
 .settings-icon {
   cursor: pointer;
 }
+.server-settings{
+  transform: translate(-100%, -0%);
+}
+.category-setting{
+  transform: translate(-100%, -0%);
+}
+.channel-setting{
+  transform: translate(-50%, -0%);
+}
 
+// .dropdown-menu {
+//   position: absolute;
+//   top: 100%;
+//   right: 0;
+//   background-color: #333;
+//   padding: 10px;
+//   border-radius: 4px;
+//   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+//   z-index: 10;
+//   width: 150px;
+  
+// }
+
+// .dropdown-item {
+//   color: rgb(255, 255, 255);
+//   padding: 8px;
+//   cursor: pointer;
+//   font-family: Arial;
+//   &:hover {
+//     background-color: #444;
+//   }
+// }
 .dropdown-menu {
   position: absolute;
-  top: 100%;
-  right: 0;
+  top: 100%; /* Adjusts the dropdown to align with the channel */
+  left: 50%; /* Place the dropdown right next to the channel */
+  right: 50%;
+   /* Ensures the dropdown is correctly centered */
   background-color: #333;
   padding: 10px;
   border-radius: 4px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 10;
   width: 150px;
-  
 }
 
 .dropdown-item {
@@ -50,8 +82,17 @@
   padding: 8px;
   cursor: pointer;
   font-family: Arial;
+
   &:hover {
     background-color: #444;
+  }
+
+  &.delete {
+    color: #e74c3c;
+
+    &:hover {
+      background-color: #c0392b;
+    }
   }
 }
 
@@ -77,6 +118,23 @@
   padding-top: 3px;
   padding-top: 3px;
   color: #ccc;
+}
+
+.channel-settings-container {
+  position: relative; /* Ensure the dropdown is positioned relative to the channel */
+  display: inline-block;
+  left:0;
+}
+
+.channel-settings-icon {
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 5px; /* Slight spacing to the right of the channel name */
+  color: #888;
+
+  &:hover {
+    color: #ccc; /* Change color on hover */
+  }
 }
 
 .add-icon,

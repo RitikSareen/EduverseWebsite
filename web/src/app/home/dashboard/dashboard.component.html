@@ -1,1 +1,21 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+    <h2>Welcome, to Eduverse</h2>
+    <p>Your Servers:</p>
+  
+    <div *ngIf="servers.length === 0" class="no-servers-message">
+      <p>You are not part of any servers yet.</p>
+    </div>
+  
+    <div *ngIf="servers.length > 0" class="server-list">
+      <div class="server-card" *ngFor="let server of servers" (click)="goToServer(server._id)">
+        <h3>{{ server.name }}</h3>
+        <p>{{ server.description || 'No description available' }}</p>
+      </div>
+    </div>
+  
+    <div class="join-new-server">
+      <button (click)="goToJoinServer()">
+        <i class="fa fa-plus"></i> Join New Server
+      </button>
+    </div>
+  </div>

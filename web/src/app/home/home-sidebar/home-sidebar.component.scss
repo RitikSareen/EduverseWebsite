@@ -1,7 +1,7 @@
 .sidebar-section {
-  width:200px;
-  background-color: #1b1b1b;
-  color: #e0e0e0;
+  width: 200px;
+  background-color: #404040;
+  color: #ffffff;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -11,6 +11,17 @@
   top: 0;
   left: 0;
   overflow-y: auto;
+}
+
+.sidebar-section img {
+  padding-top: 25px;
+  padding-bottom: 10px;
+  width: 150px;
+}
+
+.sidebar-section hr {
+  width: 100%;
+  color: #efefef;
 }
 
 .sidebar-nav {
@@ -24,26 +35,30 @@
 }
 
 .sidebar-nav li {
-  margin-bottom: 0.5rem; /* Reduced margin between items */
+  margin-top: 0.8rem; /* Reduced margin between items */
 }
 
 .sidebar-nav a {
   color: #cfcfcf;
   text-decoration: none;
   font-size: 1rem;
-  padding: 8px 10px; /* Reduced padding for links */
-  display: block;
+  padding: 8px 10px;
+  display: flex; /* Flexbox for alignment */
+  align-items: center; /* Center icon and text vertically */
   border-radius: 4px;
   transition: background-color 0.3s, color 0.3s;
 }
 
-.sidebar-nav a:hover {
-  background-color: #333;
-  color: #ffffff;
+.sidebar-nav i {
+  margin-right: 8px; /* Space between icon and text */
+  font-size: 1.0rem; /* Icon size */
+  color: inherit; /* Inherit color from the link */
+  width: 20px; /* Set a fixed width for all icons */
+  text-align: center; /* Ensure the icon is centered within its width */
 }
 
-.sidebar-nav a.active-link {
-  background-color: #555;
+.sidebar-nav a:hover {
+  background-color: #333;
   color: #ffffff;
 }
 
@@ -59,6 +74,16 @@
   margin-top: auto;
   margin-bottom: 50px; /* Pulls the button slightly up */
   transition: background-color 0.3s;
+  display: flex; /* Flexbox for alignment */
+  align-items: center; /* Center icon and text vertically */
+}
+
+.logout-button i {
+  margin-right: 8px; /* Space between icon and text */
+  font-size: 1.1rem; /* Icon size */
+  color: inherit; /* Inherit color from the button */
+  width: 20px; /* Set a fixed width for all icons */
+  text-align: center; /* Ensure the icon is centered within its width */
 }
 
 .logout-button:hover {

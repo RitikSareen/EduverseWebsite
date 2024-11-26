@@ -1,0 +1,111 @@
+div {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #2f3136; /* Matches other components */
+    color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    height: 90vh;
+  
+    h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #5865f2;
+      text-align: center;
+    }
+  
+    form {
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #b9bbbe;
+      }
+  
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        background-color: #40444b;
+        border: 1px solid #5865f2;
+        border-radius: 4px;
+        color: #ffffff;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+  
+      input[type="text"]:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #7289da;
+        background-color: #33373e;
+      }
+  
+      h3 {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #7289da;
+        text-align: center;
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+  
+        th {
+          padding: 10px;
+          text-align: left;
+          background-color: #40444b;
+          color: #b9bbbe;
+          font-weight: bold;
+        }
+  
+        td {
+          padding: 10px;
+          text-align: center;
+          color: #ffffff;
+        }
+  
+        tr:nth-child(even) {
+          background-color: #33373e;
+        }
+  
+        tr:hover {
+          background-color: #3e4148;
+        }
+  
+        input[type="checkbox"] {
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+        }
+      }
+  
+      button {
+        background-color: #5865f2;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-size: 14px;
+        display: block;
+        margin: 20px auto 0;
+  
+        &:hover {
+          background-color: #4e5ccf;
+        }
+  
+        &:disabled {
+          background-color: #999999;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+  

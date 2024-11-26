@@ -1,0 +1,67 @@
+.create-server-container {
+    max-width: 400px; // Limit the container width
+    margin: 0 auto; // Center the container
+    padding: 20px; // Add padding
+    border: 1px solid #ccc; // Light border for the container
+    border-radius: 5px; // Slightly rounded corners
+    background-color: #f9f9f9; // Light background color
+  
+    h2 {
+      text-align: center; // Center-align the heading
+      font-size: 1.5rem; // Set font size
+      margin-bottom: 15px; // Add spacing below the heading
+      color: #333; // Dark gray text color
+    }
+  
+    .form-group {
+      margin-bottom: 15px; // Add spacing between form groups
+  
+      label {
+        display: block; // Ensure labels are on their own line
+        margin-bottom: 5px; // Add spacing below the label
+        font-weight: bold; // Make labels bold
+        font-size: 0.9rem; // Set a smaller font size for labels
+        color: #333; // Dark gray text color
+      }
+  
+      input,
+      textarea {
+        width: 100%; // Full-width inputs
+        padding: 10px; // Add padding inside inputs
+        border: 1px solid #ccc; // Light gray border
+        border-radius: 3px; // Rounded corners
+        font-size: 1rem; // Set font size
+        box-sizing: border-box; // Include padding in width
+        outline: none; // Remove default outline
+        background-color: #fff; // White background
+  
+        &:focus {
+          border-color: #007bff; // Change border color on focus
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); // Add a subtle shadow on focus
+        }
+      }
+  
+      textarea {
+        resize: vertical; // Allow vertical resizing only
+        height: 80px; // Set default height
+      }
+    }
+  
+    .button-primary {
+      width: 100%; // Full-width button
+      padding: 10px; // Add padding
+      background-color: #404040; // Blue background color
+      color: #fff; // White text color
+      font-size: 1rem; // Set font size
+      border: none; // Remove border
+      border-radius: 3px; // Rounded corners
+      cursor: pointer; // Pointer cursor on hover
+      text-align: center; // Center text
+      font-weight: bold; // Bold text
+      transition: background-color 0.3s ease; // Smooth transition for hover effect
+  
+      &:hover {
+        background-color: #0056b3; // Darker blue on hover
+      }
+    }
+  }

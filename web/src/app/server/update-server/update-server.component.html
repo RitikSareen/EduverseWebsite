@@ -1,66 +1,68 @@
-<div class="server-details">
-  <h2>Update Server: {{ server.name }}</h2>
+<div class="container">
+  <div class="server-details">
+    <h2>Update Server: {{ server.name }}</h2>
 
-  <!-- Server Form -->
-  <div class="server-form">
-    <label>Server Name:</label>
-    <input type="text" [(ngModel)]="server.name" />
-    <br>
-    <label>Server Description:</label>
-    <textarea [(ngModel)]="server.description"></textarea>
-    <br>
-    <label>Join Code:</label>
-    <input type="text" [(ngModel)]="server.joinCode" />
-  </div>
-
-  <button (click)="updateServer()">Save Changes</button>
-
-  <!-- Roles Table -->
-  
-
-  <!-- Members Table -->
-  <div class="members-table">
-    <h3>Server Members</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Role</th>
-          <th>Member Name</th>
-          <th>Email</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let member of server.members">
-          <td>{{ member.role }}</td>
-          <td>{{ member.userId?.username }}</td>
-          <td>{{ member.userId?.email }}</td>
-          <td>
-            <button (click)="kickMember(member.userId._id)">Remove</button>
-            <button (click)="openChangeRoleModal(member)">Change Role</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- Role Change Modal -->
-<div *ngIf="isRoleModalOpen" class="modal">
-  <div class="modal-content">
-    <h3>Change Role for {{ selectedMember?.userId?.username }}</h3>
-    <label for="role">Select Role:</label>
-    <select [(ngModel)]="selectedRole" id="role" (change)="onRoleChange()">
-      <option *ngFor="let role of predefinedRoles" [value]="role">{{ role }}</option>
-      <option value="Other">Other</option>
-    </select>
-    <br />
-    <div *ngIf="selectedRole === 'Other'">
-      <label for="customRole">Enter Custom Role:</label>
-      <input type="text" [(ngModel)]="customRole" id="customRole" />
+    <!-- Server Form -->
+    <div class="server-form">
+      <label>Server Name:</label>
+      <input type="text" [(ngModel)]="server.name" />
+      <br>
+      <label>Server Description:</label>
+      <textarea [(ngModel)]="server.description"></textarea>
+      <br>
+      <label>Join Code:</label>
+      <input type="text" [(ngModel)]="server.joinCode" />
     </div>
-    <br />
-    <button (click)="changeRole()">Save</button>
-    <button (click)="closeRoleModal()">Cancel</button>
+
+    <button (click)="updateServer()">Save Changes</button>
+
+    <!-- Members Table -->
+    <div class="members-table">
+      <h3>Server Members</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Member Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of server.members">
+            <td>{{ member.role }}</td>
+            <td>{{ member.userId?.username }}</td>
+            <td>{{ member.userId?.email }}</td>
+            <td>
+              <button (click)="kickMember(member.userId._id)">Remove</button>
+              <button (click)="openChangeRoleModal(member)">Change Role</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Delete Server Button -->
+    <button (click)="deleteServer()" class="delete-server-button">Delete Server</button>
+  </div>
+
+  <!-- Role Change Modal -->
+  <div *ngIf="isRoleModalOpen" class="modal">
+    <div class="modal-content">
+      <h3>Change Role for {{ selectedMember?.userId?.username }}</h3>
+      <label for="role">Select Role:</label>
+      <select [(ngModel)]="selectedRole" id="role" (change)="onRoleChange()">
+        <option *ngFor="let role of predefinedRoles" [value]="role">{{ role }}</option>
+        <option value="Other">Other</option>
+      </select>
+      <br />
+      <div *ngIf="selectedRole === 'Other'">
+        <label for="customRole">Enter Custom Role:</label>
+        <input type="text" [(ngModel)]="customRole" id="customRole" />
+      </div>
+      <br />
+      <button (click)="changeRole()">Save</button>
+      <button (click)="closeRoleModal()">Cancel</button>
+    </div>
   </div>
 </div>

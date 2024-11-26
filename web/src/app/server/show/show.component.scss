@@ -14,12 +14,21 @@
 
 .show-container {
   display: flex;
-  height: 100%; /* Full viewport height */
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0; /* Full viewport height */
   
 }
 
 .main-content {
   margin-left: 200px; /* Matches sidebar width */
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
   margin-top: 0;
   margin-bottom: 0;
   margin-right: 0;

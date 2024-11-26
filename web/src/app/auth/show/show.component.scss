@@ -1,82 +1,105 @@
+/* Reset default margins and paddings for the entire page */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #404040; /* Ensure the background color matches your design */
+}
+
+body {
+  display: grid;
+  place-items: center; /* Centers the content if needed */
+  margin: 0 !important; /* Force margin to be 0 */
+}
+
 .main-container {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    height: 100vh;
-    background: #f0f2f5;
-  }
-  
-  .left-section {
-    grid-column: 1 / 4;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 2rem;
-    background: #ffffff;
-  
-    h1 {
-      font-size: 3rem;
-      font-weight: bold;
-      color: #333;
-    }
-  
-    p {
-      font-size: 1.5rem;
-      color: #666;
-      margin-top: 1rem;
-    }
-  }
-  
-  .right-section {
-    grid-column: 4 / 6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #333;
-  }
-  
-  .empty-space {
-    grid-column: 6 / 7;
-    background: #f0f2f5;
-  }
-  
-  .auth-panel {
-    width: 100%;
-    max-width: 400px;
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .tab-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-  }
-  
-  .tab-button {
-    flex: 1;
-    margin-right: 0.5rem;
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    cursor: pointer;
-    border: none;
-    border-radius: 4px;
-    background: #007bff;
-    color: #fff;
-    transition: background 0.3s;
-  
-    &:hover {
-      background: #0056b3;
-    }
-  
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-  
-  .form-container {
-    max-width: 350px; /* Fix the size of the form */
-    margin: 0 auto;
-  }
-  
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Divide into two equal parts */
+  height: 100vh;
+  background: #404040;
+  margin: 0; /* Ensure no additional margin is added */
+}
+
+/* Other styles remain the same */
+
+.left-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center; /* Center content horizontally */
+  padding: 2rem;
+  background: #404040;
+}
+
+.left-section img {
+  max-height: 70px; /* Set a reasonable max height for the logo */
+}
+
+.right-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #404040;
+}
+
+.auth-panel {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tab-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.tab-button {
+  flex: 1;
+  margin-right: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  transition: background 0.3s;
+}
+
+/* Sign In button color */
+.tab-button:first-child {
+  background: #ffffff; 
+  color: #404040;
+  border: 2px solid #404040;
+}
+
+.tab-button:first-child:hover {
+  background: #dcdcdc;
+}
+
+/* Sign Up button color */
+.tab-button:last-child {
+  background: #404040;
+  margin-right: 0;
+  color: #ffffff;
+}
+
+.tab-button:last-child:hover {
+  background: #5e5e5e;
+}
+
+.form-container {
+  max-width: 350px;
+  margin: 0 auto;
+  text-align: center;
+}

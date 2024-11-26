@@ -4,14 +4,32 @@
     <div class="form-group">
       <label for="username">Username:</label>
       <input type="text" id="username" formControlName="username" name="username" required />
+      <div class="error-message">
+        <div *ngIf="signupForm.get('username')?.invalid && signupForm.get('username')?.touched">
+          ! User name is required
+       </div>
+      </div>
     </div>
     <div class="form-group">
       <label for="email">Email:</label>
       <input type="email" id="email" formControlName="email" name="email" required />
+      <div *ngIf="emailError || (signupForm.get('email')?.invalid && signupForm.get('email')?.touched)">
+        <p class="error-message">
+          <span class="icon">!</span>
+          {{ emailError || 'A valid email is required.' }}
+        </p>
+      </div>
     </div>
+    
     <div class="form-group">
       <label for="password">Password:</label>
       <input type="password" id="password" formControlName="password" name="password" required />
+      <div class="error-message">
+        <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+          Password must be at least 6 characters.
+        </div> 
+      </div>
+      
     </div>
     <button type="submit" class="button-primary">Sign Up</button>
   </form>

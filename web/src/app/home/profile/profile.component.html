@@ -1,0 +1,67 @@
+<h1>Profile:</h1>
+
+<!-- View Mode -->
+<div *ngIf="!isEditing" class="profile-view">
+  <div class="header-section">
+    <h2>User Information</h2>
+    <i class="fas fa-edit edit-icon" (click)="toggleEdit()"></i>
+  </div>
+  <div class="profile-field">
+    <label>First Name:</label>
+    <span>{{ profileForm.get('firstName')?.value || 'N/A' }}</span>
+  </div>
+  <div class="profile-field">
+    <label>Last Name:</label>
+    <span>{{ profileForm.get('lastName')?.value || 'N/A' }}</span>
+  </div>
+  <div class="profile-field">
+    <label>Username:</label>
+    <span>{{ profileForm.get('username')?.value }}</span>
+  </div>
+  <div class="profile-field">
+    <label>Email:</label>
+    <span>{{ profileForm.get('email')?.value }}</span>
+  </div>
+</div>
+
+<!-- Edit Mode -->
+<form *ngIf="isEditing" [formGroup]="profileForm" class="profile-edit">
+  <div class="profile-field">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" formControlName="firstName" />
+  </div>
+  <div class="profile-field">
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" formControlName="lastName" />
+  </div>
+  <div class="profile-field">
+    <label for="username">Username:</label>
+    <input type="text" id="username" formControlName="username" />
+  </div>
+  <div class="profile-field">
+    <label for="email">Email:</label>
+    <input type="email" id="email" formControlName="email" />
+  </div>
+
+  <!-- Password Update Section -->
+  <div class="password-section">
+    <h3>Change Password</h3>
+    <div class="profile-field">
+      <label for="currentPassword">Current Password:</label>
+      <input type="password" id="currentPassword" formControlName="currentPassword" />
+    </div>
+    <div class="profile-field">
+      <label for="newPassword">New Password:</label>
+      <input type="password" id="newPassword" formControlName="newPassword" />
+    </div>
+    <div class="profile-field">
+      <label for="confirmPassword">Confirm New Password:</label>
+      <input type="password" id="confirmPassword" formControlName="confirmPassword" />
+    </div>
+  </div>
+
+  <div class="button-group">
+    <button type="button" class="btn btn-primary" (click)="saveProfile()">Save</button>
+    <button type="button" class="btn btn-secondary" (click)="toggleEdit()">Cancel</button>
+  </div>
+</form>

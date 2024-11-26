@@ -10,7 +10,9 @@
 
   <!-- Display Server Blocks -->
   <div *ngFor="let server of servers" class="server-block">
-    <p>{{ server.name }}</p>
+    <h3>{{ server.name }}</h3>
+    <hr>
+    <p>{{ server.description || 'No description available' }}</p> <!-- Display server description -->
 
     <!-- Show Join Button if not a member -->
     <button *ngIf="!server.isMember" (click)="openJoinModal(server._id)">

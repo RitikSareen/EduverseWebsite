@@ -1,18 +1,20 @@
 <div class="sidebar-section">
+  <img src="../../assets/eduverseLogo.png" alt="Eduverse logo">
+  <hr>
   <nav class="sidebar-nav">
     <ul>
       <li>
-        <a [routerLink]="['/home/dashboard']" routerLinkActive="active-link">Home</a>
+        <a [routerLink]="['/home/profile']" routerLinkActive="active-link"><i class="fa fa-user"></i> {{userName}}</a>
       </li>
       <li>
-        <a [routerLink]="['/home/servers']" routerLinkActive="active-link">Servers</a>
+        <a [routerLink]="['/home']" routerLinkActive="active-link"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
       </li>
       <li>
-        <a [routerLink]="['/home/message']" routerLinkActive="active-link">Messages</a>
+        <a [routerLink]="['/home/servers']" routerLinkActive="active-link"><i class="fa fa-server" aria-hidden="true"></i> Servers</a>
       </li>
     </ul>
   </nav>
 
   <!-- Logout button placed outside the navigation list to be positioned at the bottom -->
-  <button class="logout-button" (click)="logout()">Log Out</button>
+  <button class="logout-button" (click)="logout()"><i class="fa fa-sign-out"></i> Log Out</button>
 </div>

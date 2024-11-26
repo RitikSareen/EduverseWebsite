@@ -39,11 +39,12 @@ export class UpdateServerComponent implements OnInit {
       console.error('No Server ID found in Update Component');
     }
   }
-  
+
   loadServerDetails(serverId: string): void {
     this.serverService.getServerById(serverId, (data: any) => {
       if (data) {
         this.server = {
+          _id: data._id, // Add this line to include the server ID
           name: data.name,
           description: data.description,
           joinCode: data.joinCode,
@@ -55,6 +56,38 @@ export class UpdateServerComponent implements OnInit {
       }
     });
   }
+  
+  // loadServerDetails(serverId: string): void {
+  //   this.serverService.getServerById(serverId, (data: any) => {
+  //     if (data) {
+  //       this.server = {
+  //         name: data.name,
+  //         description: data.description,
+  //         joinCode: data.joinCode,
+  //         members: data.members || []
+  //       };
+  //       this.uniqueRoles = Array.from(new Set(this.server.members.map((member: any) => member.role)));
+  //     } else {
+  //       console.error('Failed to load server details.');
+  //     }
+  //   });
+  // }
+  deleteServer(): void {
+    console.log('Server ID to delete:', this.server._id); // Add this for debugging
+    if (confirm(`Are you sure you want to delete the server "${this.server.name}"? This action cannot be undone.`)) {
+      this.serverService.deleteServer(this.server._id).subscribe(
+        () => {
+          alert('Server deleted successfully!');
+          this.router.navigate(['/home']); // Redirect to home or servers list
+        },
+        (error) => {
+          console.error('Error deleting server:', error);
+          alert('An error occurred while deleting the server. Please try again.');
+        }
+      );
+    }
+  }
+  
 
   // Update server details
   updateServer(): void {

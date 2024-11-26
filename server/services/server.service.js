@@ -93,6 +93,35 @@ const joinServer = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+const leaveServer = async (req, res) => {
+  try {
+    const { serverId } = req.params;
+    const userId = req.user.id; // Assuming `authMiddleware` attaches the authenticated user to `req.user`
+
+    // Find the server and remove the user
+    const server = await Server.findById(serverId);
+    if (!server) {
+      return res.status(404).json({ message: 'Server not found' });
+    }
+
+    // Remove the user from the server's member list
+    server.members = server.members.filter((member) => member.userId.toString() !== userId);
+
+    await server.save();
+
+    // Optionally: Remove the server from the user's joined servers
+    const user = await User.findById(userId);
+    user.servers = user.servers.filter((id) => id.toString() !== serverId);
+
+    await user.save();
+
+    res.status(200).json({ message: 'Successfully left the server' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while leaving the server' });
+  }
+};
+
 
 // Update server details
 const updateServer = async (req, res) => {
@@ -149,19 +178,38 @@ const updateMemberRole = async (req, res) => {
   }
 };
 
+const deleteServer = async (req, res) => {
+  const { serverId } = req.params;
+
+  try {
+    // Step 1: Find the server to ensure it exists and populate categories
+    const server = await Server.findById(serverId).populate('categories');
+    if (!server) {
+      return res.status(404).json({ error: 'Server not found.' });
+    }
+
+    // Step 2: Iterate through each category in the server
+    for (const category of server.categories) {
+      // Step 2.1: Delete all channels in the category
+      await TextChannel.deleteMany({ _id: { $in: category.channels } });
+
+      // Step 2.2: Delete the category itself
+      await Category.findByIdAndDelete(category._id);
+    }
+
+    // Step 3: Delete the server itself
+    await Server.findByIdAndDelete(serverId);
+
+    res.status(200).json({ message: 'Server and associated data deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting server:', error);
+    res.status(500).json({ error: 'An error occurred while deleting the server.' });
+  }
+};
 
 
-// const getAllServers = async (req, res) => {
-//   try {
-//     console.log('getAllServers called'); // Log the function call
-//     const servers = await Server.find(); // Adjust query as needed
-//     console.log('Servers fetched successfully:', servers);
-//     res.status(200).json(servers);
-//   } catch (error) {
-//     console.error('Error fetching servers:', error); // Log the error in detail
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// };
+
+
 
 // Remove user from server
 const removeUserFromServer = async (req, res) => {
@@ -183,4 +231,6 @@ module.exports = {
   joinServer,
   updateServer,
   removeUserFromServer,
+  leaveServer,
+  deleteServer
 };

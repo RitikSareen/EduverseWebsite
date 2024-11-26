@@ -1,0 +1,89 @@
+.dashboard-container {
+    padding: 2rem;
+  
+    .welcome-message {
+      margin-bottom: 3rem;
+      text-align: left;
+  
+      h2 {
+        font-size: 3.5rem; /* Increased font size for a bigger greeting */
+        color: #333;
+        margin-bottom: 0.5rem;
+      }
+  
+      p {
+        font-size: 1.5rem; /* Adjusted for consistency with the larger greeting */
+        color: #555;
+      }
+    }
+  
+    .server-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* Display three servers per row */
+      gap: 2rem; /* Add spacing between cards for better layout */
+  
+      @media (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr); /* Two servers per row on medium screens */
+      }
+  
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr; /* One server per row on small screens */
+      }
+    }
+  
+    .server-card {
+      background: linear-gradient(135deg, #e9ecef, #f9f9f9);
+      border-radius: 10px;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+      padding: 2rem;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+  
+      &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+      }
+  
+      h3 {
+        font-size: 1.7rem;
+        color: #222;
+        margin-bottom: 0.5rem;
+      }
+  
+      p {
+        font-size: 1.1rem;
+        color: #666;
+        margin-top: 0.5rem;
+      }
+    }
+  
+    .join-new-server {
+      margin-top: 3rem;
+      text-align: left; /* Aligned to the left */
+      font-size: 1.1rem; /* Made smaller */
+      display: flex;
+      align-items: center;
+      gap: 0.3rem; /* Reduced space between text and icon */
+  
+      button {
+        background-color: transparent;
+        border: none;
+        color: #007bff;
+        font-size: 1rem; /* Smaller button size */
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: color 0.3s;
+  
+        &:hover {
+          color: #0056b3;
+        }
+  
+        i {
+          font-size: 1.2rem; /* Adjusted icon size */
+        }
+      }
+    }
+  }
