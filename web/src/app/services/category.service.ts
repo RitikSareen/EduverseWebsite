@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
 
 
 export class CategoryService {
-  private baseUrl = 'http://localhost:3500/categories'; // Adjust the base URL as needed
-
+  private baseUrl = 'http://192.41.170.157:3500/categories'; // Adjust the base URL as needed
+  // private baseUrl = 'http://localhost:3500/categories'; // Adjust the base URL as needed
   constructor(
     private http: HttpClient, 
     private authService: AuthService,
@@ -61,7 +61,8 @@ export class CategoryService {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
-    this.http.delete(`http://localhost:3500/categories/${categoryId}`, { headers })
+    // this.http.delete(`http://192.41.170.157:3500/categories/${categoryId}`, { headers })
+    this.http.delete(`${this.baseUrl}/${categoryId}`, { headers })
       .subscribe({
         next: () => {
           console.log('Category deleted successfully');
@@ -95,7 +96,8 @@ export class CategoryService {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
-    this.http.put(`http://localhost:3500/categories/${categoryId}`, categoryData, { headers })
+    // this.http.put(`http://192.41.170.157:3500/categories/${categoryId}`, categoryData, { headers })
+    this.http.put(`${this.baseUrl}/${categoryId}`, categoryData, { headers })
       .subscribe({
         next: () => {
           console.log('Category updated successfully');

@@ -13,7 +13,7 @@ export class DirectChatService {
 
   connect(): void {
     const token = localStorage.getItem('token');
-    this.socket = io('http://localhost:3500', {
+    this.socket = io('http://192.41.170.157:3500', {
       query: {
         token: token
       }

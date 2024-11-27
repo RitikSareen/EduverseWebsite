@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TextChannelService {
-  private baseUrl = 'http://localhost:3500/textChannels'; // Base URL for server-related API calls
-
+  private baseUrl = 'http://192.41.170.157:3500/textChannels'; // Base URL for textChannel-related API calls
+  // private baseUrl = 'http://localhost/textChannels';
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   // Create a new text channel under a specific category
@@ -73,7 +73,7 @@ export class TextChannelService {
   deleteMessage( textChannelId: string, messageId: string): Observable<any> {
     const token = localStorage.getItem('token')?.replace(/^"|"$/g, ''); // Clean the token
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const url = `http://localhost:3500/textChannels/${textChannelId}/messages/${messageId}`;
+    const url = `${this.baseUrl}/${textChannelId}/messages/${messageId}`;
     return this.http.delete(url, { headers });
   }
 
@@ -81,7 +81,7 @@ export class TextChannelService {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
-    this.http.get<any>(`http://localhost:3500/textChannels/details/${channelId}`, { headers })
+    this.http.get<any>(`${this.baseUrl}/details/${channelId}`, { headers })
       .subscribe({
         next: (data) => callback(data),
         error: (error) => {
@@ -95,7 +95,7 @@ export class TextChannelService {
     const token = this.authService.getToken();// Retrieve the token if required
     const headers = { Authorization: `Bearer ${token}` }; // Optional authentication headers
   
-    this.http.put(`http://localhost:3500/textChannels/${channelId}`, channelData, { headers }).subscribe({
+    this.http.put(`${this.baseUrl}/${channelId}`, channelData, { headers }).subscribe({
       next: () => {
         console.log('Channel updated successfully.');
         callback();

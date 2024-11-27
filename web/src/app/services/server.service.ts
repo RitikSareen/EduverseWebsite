@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ServerService {
-  private baseUrl = 'http://localhost:3500/servers'; // Adjust the base URL as needed
-
+  private baseUrl = 'http://192.41.170.157:3500/servers'; // Adjust the base URL as needed
+  // private baseUrl = 'http://localhost:3500/servers';
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -123,7 +123,7 @@ export class ServerService {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     
-    this.http.put(`http://localhost:3500/servers/${serverId}/members/${memberId}/role`, { role }, { headers })
+    this.http.put(`http://192.41.170.157:3500/servers/${serverId}/members/${memberId}/role`, { role }, { headers })
       .subscribe({
         next: () => {
           console.log('Member role updated successfully');

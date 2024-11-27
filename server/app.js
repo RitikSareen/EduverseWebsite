@@ -26,7 +26,8 @@ const app = express();
 const port = 3500;
 
 // MongoDB connection string
-const mongoURI = 'mongodb://localhost:4800/eduverse-db';
+// const mongoURI = 'mongodb://localhost:4800/eduverse-db';
+const mongoURI = process.env.MONGODB_URI;
 
 // Connect to MongoDB
 // mongoose.connect(mongoURI);
@@ -44,7 +45,8 @@ mongoose.connect(mongoURI, {
 // Middleware to parse JSON
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:4200',
+  origin: 'http://192.41.170.157:4200',
+  // origin: 'http://localhost:4200',
 }));
 
 // Define Routes
@@ -59,7 +61,8 @@ app.use('/directMessages', verifyToken, directMessagesRoutes);
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: 'http://localhost:4200', // Adjust to your client origin
+    origin: 'http://192.41.170.157:4200',
+    // origin: 'http://localhost:4200', // Adjust to your client origin
     methods: ['GET', 'POST'],
   },
 });
@@ -84,7 +87,7 @@ app.get('/', (req, res) => {
 
 // Start the server
 server.listen(port, () => {
-  console.log(`Express app listening at http://localhost:${port}`);
+  console.log(`Express app listening at http://192.41.170.157:${port}`);
 });
 
 module.exports = { app, io };

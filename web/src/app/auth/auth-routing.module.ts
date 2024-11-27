@@ -15,10 +15,10 @@ const routes: Routes = [
       { path: 'signUp', component: SignUpComponent }
     ]
   },
-  {
-    path: 'landingPage',
-    component: LandingPageComponent
-  }
+  // {
+  //   path: 'landingPage',
+  //   component: LandingPageComponent
+  // }
 ];
 
 @NgModule({

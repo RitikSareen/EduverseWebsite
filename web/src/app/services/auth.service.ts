@@ -9,7 +9,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseURL = 'http://localhost:3500/user';
+  // private baseURL = 'http://localhost:3500/user';
+  private baseURL = 'http://192.41.170.157:3500/user';
   private userSubject = new BehaviorSubject<any>(this.getSafeUser()); // Initialize with safe check for user
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -149,7 +150,7 @@ export class AuthService {
       color: '#ffffff',
       confirmButtonColor: '#007BFF',
     }).then(() => {
-      this.router.navigate(['/auth/logIn']);
+      this.router.navigate(['/auth/show/signIn']);
     });
   }
 
@@ -204,130 +205,3 @@ export class AuthService {
 }
 
 
-// import { HttpClient } from '@angular/common/http';
-// import { Injectable } from '@angular/core';
-// import { Router } from '@angular/router';
-// import Swal from 'sweetalert2';
-// import { Observable } from 'rxjs';
-// import { map } from 'rxjs/operators';
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class AuthService {
-//   private baseURL = 'http://localhost:3500/user'; // Fixed typo
-//   constructor(
-//     private http: HttpClient,
-//     private router: Router
-//   ) {}
-
-//   get isSignedIn() {
-//     return !!this.getUser();
-//   }
-
-//   getUser() {
-//     const user = JSON.parse(localStorage.getItem('user') || 'null');
-//     console.log('AuthService.getUser() output:', user); // Debugging output
-//     return user;
-//     // let user = localStorage.getItem('user');
-//     // return user ? JSON.parse(user) : null;
-//   }
-  
-//   emailExists(email: string): Observable<boolean> {
-//     const url = `${this.baseURL}/check-email?email=${email}`;
-//     return this.http.get<{ exists: boolean }>(url).pipe(
-//       map((response: { exists: boolean }) => response.exists)
-//     );
-//   }
-
-//   getUserDetails(userId: string): Observable<any> {
-//     const url = `${this.baseURL}/${userId}`; // Adjusted endpoint for user details
-//     return this.http.get<any>(url);
-//   }
-
-//   getToken() {
-//     const token = localStorage.getItem('token');
-//     return token ? JSON.parse(token) : null;
-//   }
-
-//   // Register Method with SweetAlert2
-//   register(userData: any): void {
-//     this.http.post(`${this.baseURL}/register`, userData)
-//       .subscribe({
-//         next: (response: any) => {
-//           localStorage.setItem('user', JSON.stringify(response.user));
-//           localStorage.setItem('token', JSON.stringify(response.token));
-
-//           Swal.fire({
-//             icon: 'success',
-//             title: 'Registration Successful',
-//             text: 'Welcome to Eduverse!',
-//             background: '#3e3e3e',
-//             color: '#ffffff',
-//             confirmButtonColor: '#007BFF'
-//           });
-
-//           this.router.navigate(['/home']);
-//         },
-//         error: () => {
-//           Swal.fire({
-//             icon: 'error',
-//             title: 'Registration Failed',
-//             text: 'Please try again later.',
-//             background: '#3e3e3e',
-//             color: '#ffffff',
-//             confirmButtonColor: '#ff4d4d'
-//           });
-//         }
-//       });
-//   }
-
-//   // Login Method with SweetAlert2
-//   signIn(userData: any): void {
-//     this.http.post(`${this.baseURL}/login`, userData)
-//       .subscribe({
-//         next: (response: any) => {
-//           localStorage.setItem('user', JSON.stringify(response.user));
-//           localStorage.setItem('token', JSON.stringify(response.token));
-
-//           Swal.fire({
-//             icon: 'success',
-//             title: 'Login Successful',
-//             text: 'You are now logged in to Eduverse!',
-//             background: '#3e3e3e',
-//             color: '#ffffff',
-//             confirmButtonColor: '#007BFF'
-//           });
-
-//           this.router.navigate(['/home']);
-//         },
-//         error: () => {
-//           Swal.fire({
-//             icon: 'error',
-//             title: 'Login Failed',
-//             text: 'Invalid email or password. Please try again.',
-//             background: '#3e3e3e',
-//             color: '#ffffff',
-//             confirmButtonColor: '#ff4d4d'
-//           });
-//         }
-//       });
-//   }
-
-//   // Logout Method with SweetAlert2
-//   logout(): void {
-//     localStorage.removeItem('user');
-//     localStorage.removeItem('token');
-
-//     Swal.fire({
-//       icon: 'info',
-//       title: 'Logged Out',
-//       text: 'You have been successfully logged out.',
-//       background: '#3e3e3e',
-//       color: '#ffffff',
-//       confirmButtonColor: '#007BFF'
-//     }).then(() => {
-//       this.router.navigate(['/auth/logIn']);
-//     });
-//   }
-// }
