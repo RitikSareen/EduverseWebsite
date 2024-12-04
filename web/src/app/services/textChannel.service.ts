@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TextChannelService {
-  private baseUrl = 'http://192.41.170.157:3500/textChannels'; // Base URL for textChannel-related API calls
-  // private baseUrl = 'http://localhost/textChannels';
+  // private baseUrl = 'http://192.41.170.157:3500/textChannels'; // Base URL for textChannel-related API calls
+  private baseUrl = 'http://localhost:3500/textChannels';
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   // Create a new text channel under a specific category

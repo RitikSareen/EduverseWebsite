@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  // private baseURL = 'http://localhost:3500/user';
-  private baseURL = 'http://192.41.170.157:3500/user';
+  private baseURL = 'http://localhost:3500/user';
+  // private baseURL = 'http://192.41.170.157:3500/user';
   private userSubject = new BehaviorSubject<any>(this.getSafeUser()); // Initialize with safe check for user
 
   constructor(private http: HttpClient, private router: Router) {}

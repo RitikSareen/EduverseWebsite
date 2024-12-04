@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
 
 
 export class CategoryService {
-  private baseUrl = 'http://192.41.170.157:3500/categories'; // Adjust the base URL as needed
-  // private baseUrl = 'http://localhost:3500/categories'; // Adjust the base URL as needed
+  // private baseUrl = 'http://192.41.170.157:3500/categories'; // Adjust the base URL as needed
+  private baseUrl = 'http://localhost:3500/categories'; // Adjust the base URL as needed
   constructor(
     private http: HttpClient, 
     private authService: AuthService,

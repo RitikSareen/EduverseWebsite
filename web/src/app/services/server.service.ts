@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ServerService {
-  private baseUrl = 'http://192.41.170.157:3500/servers'; // Adjust the base URL as needed
-  // private baseUrl = 'http://localhost:3500/servers';
+  // private baseUrl = 'http://192.41.170.157:3500/servers'; // Adjust the base URL as needed
+  private baseUrl = 'http://localhost:3500/servers';
   constructor(
     private http: HttpClient,
     private router: Router,

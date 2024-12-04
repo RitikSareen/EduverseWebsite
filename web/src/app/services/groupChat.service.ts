@@ -18,8 +18,8 @@ export class GroupChatService {
       return;
     }
 
-    this.socket = io('http://192.41.170.157:3500', {
-    // this.socket = io('http://localhost:3500', {
+    // this.socket = io('http://192.41.170.157:3500', {
+    this.socket = io('http://localhost:3500', {
       extraHeaders: { Authorization: `Bearer ${token}` },
     });
 
